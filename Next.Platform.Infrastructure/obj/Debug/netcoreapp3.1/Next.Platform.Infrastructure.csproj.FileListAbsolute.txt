@@ -1,0 +1,4 @@
+O:\CS\Projects\Final Project\Next-PlatForm\Next.Platform\Next.Platform.Infrastructure\bin\Debug\netcoreapp3.1\Next.Platform.Core.dll
+O:\CS\Projects\Final Project\Next-PlatForm\Next.Platform\Next.Platform.Infrastructure\obj\Debug\netcoreapp3.1\Next.Platform.Infrastructure.csprojAssemblyReference.cache
+O:\CS\Projects\Final Project\Next-PlatForm\Next.Platform\Next.Platform.Infrastructure\obj\Debug\netcoreapp3.1\Next.Platform.Infrastructure.AssemblyInfoInputs.cache
+O:\CS\Projects\Final Project\Next-PlatForm\Next.Platform\Next.Platform.Infrastructure\obj\Debug\netcoreapp3.1\Next.Platform.Infrastructure.AssemblyInfo.cs
