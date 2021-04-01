@@ -9,11 +9,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using FluentValidation.AspNetCore;
 using Next.Platform.Application.Configuration;
 
 namespace Next.Platform.Web
 {
-    public class Startup
+    public class Startup 
     {
         public Startup(IConfiguration configuration)
         {
@@ -26,6 +27,8 @@ namespace Next.Platform.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddMvc()
+                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<Startup>());
             // This method handel all DependencyInjection
             DependencyInjectionHandling.Handle(services);
 

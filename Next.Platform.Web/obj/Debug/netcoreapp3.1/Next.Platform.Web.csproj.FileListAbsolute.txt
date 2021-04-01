@@ -50,3 +50,7 @@ O:\CS\Projects\Final Project\Next-PlatForm\Next.Platform\Next.Platform.Web\obj\D
 O:\CS\Projects\Final Project\Next-PlatForm\Next.Platform\Next.Platform.Web\obj\Debug\netcoreapp3.1\Next.Platform.Web.RazorTargetAssemblyInfo.cache
 O:\CS\Projects\Final Project\Next-PlatForm\Next.Platform\Next.Platform.Web\bin\Debug\netcoreapp3.1\Humanizer.dll
 O:\CS\Projects\Final Project\Next-PlatForm\Next.Platform\Next.Platform.Web\bin\Debug\netcoreapp3.1\Microsoft.EntityFrameworkCore.Design.dll
+O:\CS\Projects\Final Project\Next-PlatForm\Next.Platform\Next.Platform.Web\bin\Debug\netcoreapp3.1\Microsoft.OpenApi.dll
+O:\CS\Projects\Final Project\Next-PlatForm\Next.Platform\Next.Platform.Web\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.Swagger.dll
+O:\CS\Projects\Final Project\Next-PlatForm\Next.Platform\Next.Platform.Web\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.SwaggerGen.dll
+O:\CS\Projects\Final Project\Next-PlatForm\Next.Platform\Next.Platform.Web\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.SwaggerUI.dll

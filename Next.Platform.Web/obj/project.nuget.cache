@@ -1,9 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "5JM7mQSDlo0zQgDsexTFZYbvVa/F8HoLZ/AmqtD+HTgo8iqKY3Q3DUZvIepguGBBApMO9RlzHrfMk1PAmbse2g==",
+  "dgSpecHash": "u2+wkMjd1vr537WnlSrGs04xvJcCZ9dNDHYYlnI911QuiQ78Nzi8tQmcRNavgLVkFCImLTp3OYJBmwXwPssWvA==",
   "success": true,
   "projectFilePath": "O:\\CS\\Projects\\Final Project\\Next-PlatForm\\Next.Platform\\Next.Platform.Web\\Next.Platform.Web.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\osama\\.nuget\\packages\\fluentvalidation\\9.5.3\\fluentvalidation.9.5.3.nupkg.sha512",
+    "C:\\Users\\osama\\.nuget\\packages\\fluentvalidation.aspnetcore\\9.5.3\\fluentvalidation.aspnetcore.9.5.3.nupkg.sha512",
+    "C:\\Users\\osama\\.nuget\\packages\\fluentvalidation.dependencyinjectionextensions\\9.5.3\\fluentvalidation.dependencyinjectionextensions.9.5.3.nupkg.sha512",
     "C:\\Users\\osama\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Users\\osama\\.nuget\\packages\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512",
     "C:\\Users\\osama\\.nuget\\packages\\microsoft.data.sqlclient\\2.0.1\\microsoft.data.sqlclient.2.0.1.nupkg.sha512",
