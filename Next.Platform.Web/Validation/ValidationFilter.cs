@@ -29,7 +29,6 @@ namespace Next.Platform.Web.Validation
                         ErrorResponse.Errors.Add((ErrorModel));
                     }
                 }
-
                 context.Result = new BadRequestObjectResult(ErrorResponse);
                 return;
             }

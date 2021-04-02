@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
+using Next.Platform.Core.Model;
+using Next.Platform.Core.StatusEnum;
 
 namespace Next.Platform.Infrastructure.AppContext
 {
@@ -17,7 +20,67 @@ namespace Next.Platform.Infrastructure.AppContext
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<Replay>()
+                .HasOne(e => e.user)
+                .WithMany()
+                .HasForeignKey(x => x.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<PlayGroundBooking>().HasKey(pgb => new { pgb.UserId, pgb.PlayGroundId });
+            modelBuilder.Entity<PreferredPlayGround>().HasKey(ppg => new { ppg.UserId, ppg.PlayGroundId });
+
+            modelBuilder
+                .Entity<PlayGround>()
+                .Property(e => e.PlayGroundStatusId)
+                .HasConversion<int>();
+
+            modelBuilder
+                .Entity<PlayGroundStatus>()
+                .Property(e => e.Id)
+                .HasConversion<int>();
+
+            modelBuilder
+                .Entity<PlayGroundStatus>().HasData(
+                    Enum.GetValues(typeof(PlayGroundStatusEnum))
+                        .Cast<PlayGroundStatusEnum>()
+                        .Select(e => new PlayGroundStatus()
+                        {
+                            Id = e,
+                            Status = e.ToString()
+                        })
+                );
+            // ================================================
+            modelBuilder
+                .Entity<PlayGroundBooking>()
+                .Property(e => e.PlayGroundBookingStatusId)
+                .HasConversion<int>();
+
+            modelBuilder
+                .Entity<PlayGroundBookingStatus>()
+                .Property(e => e.Id)
+                .HasConversion<int>();
+
+            modelBuilder
+                .Entity<PlayGroundBookingStatus>().HasData(
+                    Enum.GetValues(typeof(PlayGroundBookingStatusEnum))
+                        .Cast<PlayGroundBookingStatusEnum>()
+                        .Select(e => new PlayGroundBookingStatus()
+                        {
+                            Id = e,
+                            Status = e.ToString()
+                        })
+                );
         }
+
+        public DbSet<Admin> Admins { get; set; }
+        public DbSet<Comment> Comments { get; set; }
+        public DbSet<Owner> Owners { get; set; }
+        public DbSet<PlayGround> PlayGrounds { get; set; }
+        public DbSet<PlayGroundBooking> PlayGroundBookings { get; set; }
+        public DbSet<PlayGroundBookingStatus> PlayGroundBookingStatus { get; set; }
+        public DbSet<PlayGroundStatus> PlayGroundStatus { get; set; }
+        public DbSet<PreferredPlayGround> PreferredPlayGrounds { get; set; }
+        public DbSet<User> Users { get; set; }
+
     }
 }
