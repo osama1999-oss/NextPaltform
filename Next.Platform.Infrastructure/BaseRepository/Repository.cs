@@ -8,7 +8,7 @@ using Next.Platform.Infrastructure.IBaseRepository;
 
 namespace Next.Platform.Infrastructure.BaseRepository
 {
-    class Repository<T> : IRepository<T> where T : class
+   public class Repository<T> : IRepository<T> where T : class
     {
         readonly NextPlatformDbContext _entities;
 

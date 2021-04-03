@@ -13,23 +13,23 @@ namespace Next.Platform.Web.Validation
         {
             if (!context.ModelState.IsValid)
             {
-                var ErrorsInModelsState = context.ModelState
+                var errorsInModelsState = context.ModelState
                     .Where(x => x.Value.Errors.Count > 0)
                     .ToDictionary(Kvp => Kvp.Key, Kvp => Kvp.Value.Errors.Select(x => x.ErrorMessage)).ToArray();
-                var ErrorResponse =new ErrorResponse();
-                foreach (var error in ErrorsInModelsState)
+                var errorResponse =new ErrorResponse();
+                foreach (var error in errorsInModelsState)
                 {
                     foreach (var subError in error.Value)
                     {
-                        var ErrorModel = new ErrorModel
+                        var errorModel = new ErrorModel
                         {
                             FieldName = error.Key,
                             Message = subError
                         };
-                        ErrorResponse.Errors.Add((ErrorModel));
+                        errorResponse.Errors.Add((errorModel));
                     }
                 }
-                context.Result = new BadRequestObjectResult(ErrorResponse);
+                context.Result = new BadRequestObjectResult(errorResponse);
                 return;
             }
 

@@ -9,8 +9,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using FluentValidation;
 using FluentValidation.AspNetCore;
 using Next.Platform.Application.Configuration;
+using Next.Platform.Application.Dtos;
+using Next.Platform.Application.DtosValidator;
+using Next.Platform.Web.Validation;
 
 namespace Next.Platform.Web
 {
@@ -27,13 +31,33 @@ namespace Next.Platform.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddMvc()
-                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<Startup>());
+
+
+            // FluentValidation
+            services.AddMvc(op =>
+            {
+                op.Filters.Add<ValidationFilter>();
+            })    // i have issue in automatic register command ***
+                .AddFluentValidation();
+            services.AddTransient<IValidator<UserAuthenticationDto>, UserAuthenticationDtoValidator>();
+
+
             // This method handel all DependencyInjection
             DependencyInjectionHandling.Handle(services);
 
+            //AddSwagger
             services.AddSwaggerGen();
 
+            // Allow Cors
+            services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
+            {
+                builder.AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader();
+            }));
+
+            //AddAutoMapper
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

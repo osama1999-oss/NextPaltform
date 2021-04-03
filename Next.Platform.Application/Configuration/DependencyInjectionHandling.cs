@@ -3,7 +3,12 @@ using System.Collections.Generic;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Next.Platform.Application.IServices;
+using Next.Platform.Application.Services;
+using Next.Platform.Core.Model;
 using Next.Platform.Infrastructure.AppContext;
+using Next.Platform.Infrastructure.BaseRepository;
+using Next.Platform.Infrastructure.IBaseRepository;
 
 namespace Next.Platform.Application.Configuration
 { 
@@ -17,9 +22,11 @@ namespace Next.Platform.Application.Configuration
             });
 
             // Repository
-
+            services.AddTransient<IRepository<User>, Repository<User>>();
 
             //Services
+            services.AddTransient<IUserService, UserService>();
+
         }
     }
 }
