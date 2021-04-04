@@ -77,3 +77,4 @@ O:\CS\Projects\Final Project\Next-PlatForm\Next.Platform\Next.Platform.Web\obj\D
 O:\CS\Projects\Final Project\Next-PlatForm\Next.Platform\Next.Platform.Web\obj\Debug\netcoreapp3.1\Next.Platform.Web.genruntimeconfig.cache
 O:\CS\Projects\Final Project\Next-PlatForm\Next.Platform\Next.Platform.Web\bin\Debug\netcoreapp3.1\AutoMapper.dll
 O:\CS\Projects\Final Project\Next-PlatForm\Next.Platform\Next.Platform.Web\bin\Debug\netcoreapp3.1\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
+O:\CS\Projects\Final Project\Next-PlatForm\Next.Platform\Next.Platform.Web\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Authentication.JwtBearer.dll

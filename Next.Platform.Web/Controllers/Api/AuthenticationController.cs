@@ -4,6 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.AspNetCore.Mvc.ActionConstraints;
 using Next.Platform.Application.Dtos;
 using Next.Platform.Application.IServices;
@@ -16,24 +18,26 @@ namespace Next.Platform.Web.Controllers.Api
     public class AuthenticationController : ControllerBase
     {
         private readonly IUserService _userService;
-
-        public AuthenticationController( IUserService userService)
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        public AuthenticationController( IUserService userService, IHttpContextAccessor httpContextAccessor)
         {
             this._userService = userService;
+            this._httpContextAccessor = httpContextAccessor;
         }
 
         [HttpPost]
-        [Route("UserAuthentication")]
+        [Route("UserAuthenticate")]
         public ActionResult Login( [FromForm] UserAuthenticationDto userAuthenticationDto)
         {
-             
-             var  result =_userService.Login(userAuthenticationDto);
-             if (result == null)
+            ActionResult response = Unauthorized();
+             var  token =_userService.Login(userAuthenticationDto);
+             if (token != null)
              {
-                 return BadRequest("Admin Not Found");
+                 response = Ok(new {token = token });
+                 _httpContextAccessor.HttpContext.Response.Cookies.Append("token", token,new CookieOptions{HttpOnly = true});
              }
-             return Ok(result);
+             return response;
         }
-
+        
     }
 }
