@@ -10,8 +10,8 @@ namespace Next.Platform.Application.DtosValidator
     {
         public UserAuthenticationDtoValidator()
         {
-           RuleFor(x => x.PhoneNumber).NotNull().NotEmpty().WithMessage("Name Number address is required");
-           RuleFor(x => x.Password).NotNull().NotEmpty().WithMessage("Password  is required");
+           RuleFor(x => x.PhoneNumber).NotNull().NotEmpty().WithMessage("PhoneNumber is required");
+           RuleFor(x => x.Password).NotNull().NotEmpty().WithMessage("Password is required");
 
         }
     }
