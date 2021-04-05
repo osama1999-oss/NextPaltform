@@ -6,17 +6,15 @@ using Next.Platform.Application.Dtos;
 
 namespace Next.Platform.Application.DtosValidator
 {
-   public class UserAuthenticationDtoValidator: AbstractValidator<UserAuthenticationDto>
+  public  class OwnerAuthenticationDtoValidator :AbstractValidator<OwnerAuthenticationDto>
     {
-        public UserAuthenticationDtoValidator()
+        public OwnerAuthenticationDtoValidator()
         {
-            RuleFor(x => x.PhoneNumber).NotNull().NotEmpty().WithMessage("PhoneNumber is required")
-                .Matches(@"^01[0125][0-9]{8}$")
-                .WithMessage(
-                    "Phone Number should be like in Phone length is exactly 11 And Phone Prefix is with in allowed ones 010, 011, 012, 015");
+            RuleFor(o => o.Email).NotEmpty().NotNull().WithMessage("Email is required ")
+                .Matches(@"^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$")
+                .WithMessage("Email Should be in the right Like example@example.com");
             RuleFor(x => x.Password).NotNull().NotEmpty().WithMessage("Password is required")
                 .Matches(@"^(?=.*[0-9]).{8,12}$").WithMessage("Password should be less than 8 characters  but no more than 12 and at at least one digit");
-
         }
     }
 }

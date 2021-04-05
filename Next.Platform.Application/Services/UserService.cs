@@ -13,13 +13,13 @@ namespace Next.Platform.Application.Services
    public class UserService : IUserService
    {
        private readonly IRepository<User> _userRepository;
-       private readonly IAuthenticateService _AuthenticateService;
+       private readonly IAuthenticateService _authenticateService;
        private readonly IMapper _mapper;
-        public UserService(IRepository<User> useRepository, IMapper mapper, IAuthenticateService AuthenticateService)
+        public UserService(IRepository<User> useRepository, IMapper mapper, IAuthenticateService authenticateService)
         {
             this._userRepository = useRepository;
             this._mapper = mapper;
-            this._AuthenticateService = AuthenticateService;
+            this._authenticateService = authenticateService;
         }
 
         public string Login(UserAuthenticationDto userDto)
@@ -27,10 +27,10 @@ namespace Next.Platform.Application.Services
              var result= _userRepository.FindBy(u => u.PhoneNumber == userDto.PhoneNumber && u.Password == userDto.Password)
                     .FirstOrDefault();
              string token = null;
-             if (result != null)
+             if(result != null)
              {
                  var userDtoResult = _mapper.Map<UserAuthenticationDto>(result);
-                  token= _AuthenticateService.GenerateJSONWebToken(result.Name);
+                  token = _authenticateService.GenerateJSONWebToken(result.Name);
              }
 
             return token;

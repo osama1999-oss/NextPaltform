@@ -68,8 +68,9 @@ namespace Next.Platform.Web
                 op.Filters.Add<ValidationFilter>();
             })    // i have issue in automatic register command ***
                 .AddFluentValidation();
-            services.AddTransient<IValidator<UserAuthenticationDto>, UserAuthenticationDtoValidator>();
 
+            // Register Validator for fluentValidation 
+            RegisterValidator.Register(services);
 
             // This method handel all DependencyInjection
             DependencyInjectionHandling.Handle(services);

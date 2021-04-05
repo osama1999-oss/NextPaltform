@@ -14,6 +14,13 @@ namespace Next.Platform.Application.MappingConfiguration
             // Add as many of these lines as you need to map your objects
             CreateMap<User, UserAuthenticationDto>();
             CreateMap<UserAuthenticationDto, User>();
+
+            CreateMap<OwnerAuthenticationDto, Owner>();
+            CreateMap<Owner, OwnerAuthenticationDto>();
+
+            CreateMap<Admin, AdminAuthenticationDto>();
+
+
         }
     }
 }

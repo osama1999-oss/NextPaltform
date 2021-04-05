@@ -23,10 +23,14 @@ namespace Next.Platform.Application.Configuration
 
             // Repository
             services.AddTransient<IRepository<User>, Repository<User>>();
+            services.AddTransient<IRepository<Owner>, Repository<Owner>>();
+            services.AddTransient<IRepository<Admin>, Repository<Admin>>();
 
             //Services
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IAuthenticateService, AuthenticationService>();
+            services.AddTransient<IOwnerService, OwnerService>();
+            services.AddTransient<IAdminService, AdminService>();
             services.AddHttpContextAccessor();
 
         }

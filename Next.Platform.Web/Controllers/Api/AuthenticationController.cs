@@ -19,10 +19,14 @@ namespace Next.Platform.Web.Controllers.Api
     {
         private readonly IUserService _userService;
         private readonly IHttpContextAccessor _httpContextAccessor;
-        public AuthenticationController( IUserService userService, IHttpContextAccessor httpContextAccessor)
+        private readonly IOwnerService _ownerService;
+        private readonly IAdminService _adminService;
+        public AuthenticationController(IAdminService adminService, IUserService userService, IHttpContextAccessor httpContextAccessor, IOwnerService ownerService)
         {
             this._userService = userService;
             this._httpContextAccessor = httpContextAccessor;
+            this._ownerService = ownerService;
+            this._adminService = adminService;
         }
 
         [HttpPost]
@@ -38,6 +42,24 @@ namespace Next.Platform.Web.Controllers.Api
              }
              return response;
         }
-        
+
+        [HttpPost]
+        [Route("OwnerAuthenticate")]
+        public ActionResult Login([FromForm] OwnerAuthenticationDto ownerAuthenticationDto)
+        {
+            var owner = _ownerService.Login(ownerAuthenticationDto);
+            
+            return Ok(new {owner});
+        }
+
+        [HttpPost]
+        [Route("AdminAuthenticate")]
+        public ActionResult Login([FromForm] AdminAuthenticationDto adminAuthenticationDto)
+        {
+            var admin = _adminService.Login(adminAuthenticationDto);
+
+            return Ok(new { admin });
+        }
+
     }
 }
