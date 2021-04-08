@@ -15,6 +15,7 @@ namespace Next.Platform.Application.Configuration
             services.AddTransient<IValidator<UserAuthenticationDto>, UserAuthenticationDtoValidator>();
             services.AddTransient<IValidator<OwnerAuthenticationDto>, OwnerAuthenticationDtoValidator>();
             services.AddTransient<IValidator<AdminAuthenticationDto>, AdminAuthenticationDtoValidator>();
+            services.AddTransient<IValidator<UserModelDto>, UserModelDtoValidator>();
         }
     }
 }

@@ -20,6 +20,11 @@ namespace Next.Platform.Infrastructure.AppContext
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+
+            modelBuilder.Entity<User>()
+                .HasIndex(u => u.PhoneNumber)
+                .IsUnique(true);
+
             modelBuilder.Entity<Replay>()
                 .HasOne(e => e.user)
                 .WithMany()

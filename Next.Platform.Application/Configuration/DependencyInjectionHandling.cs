@@ -32,6 +32,7 @@ namespace Next.Platform.Application.Configuration
             services.AddTransient<IOwnerService, OwnerService>();
             services.AddTransient<IAdminService, AdminService>();
             services.AddHttpContextAccessor();
+            
 
         }
     }
