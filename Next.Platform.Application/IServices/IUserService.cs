@@ -12,8 +12,8 @@ namespace Next.Platform.Application.IServices
    {
        string Login(UserAuthenticationDto user);
        bool Register(UserModelDto user);
-       public bool IsUnique(string phoneNumber);
-       Task<string> UploadImage(IFormFile imaFile);
+       public bool NumberIsUnique(string phoneNumber);
+       Task<string> UploadImage(IFormFile imaFile, string folderName);
           
    }
 }

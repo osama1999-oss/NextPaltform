@@ -16,11 +16,11 @@ namespace Next.Platform.Web.Controllers.Api
     public class RegistrationController : ControllerBase
     {
         private readonly IUserService _userService;
-        private readonly IWebHostEnvironment _hostEnvironment;
-        public RegistrationController(IUserService userService, IWebHostEnvironment hostEnvironment)
+        private readonly IOwnerService _ownerService;
+        public RegistrationController(IUserService userService, IOwnerService ownerService)
         {
             this._userService = userService;
-            this._hostEnvironment = hostEnvironment;
+            this._ownerService = ownerService;
         }
 
         [HttpPost]
@@ -34,8 +34,18 @@ namespace Next.Platform.Web.Controllers.Api
             return BadRequest();
 
         }
+        [HttpPost]
+        [Route("OwnerRegistration")]
+        public ActionResult Register([FromForm] OwnerModelDto owner)
+        {
 
-     
+            bool result = _ownerService.Register(owner);
+            if (result)
+                return Ok(new { result });
+            return BadRequest();
+
+        }
+
 
 
 

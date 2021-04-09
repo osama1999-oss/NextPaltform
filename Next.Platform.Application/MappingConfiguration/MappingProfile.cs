@@ -21,6 +21,7 @@ namespace Next.Platform.Application.MappingConfiguration
             CreateMap<Admin, AdminAuthenticationDto>();
 
             CreateMap<UserModelDto, User>();
+            CreateMap<OwnerModelDto, Owner>();
 
 
         }

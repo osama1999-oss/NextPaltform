@@ -48,7 +48,7 @@ namespace Next.Platform.Application.Services
             {
                 var result = _mapper.Map<User>(user);
                 result.Id=Guid.NewGuid();
-                Task<string> imageName = UploadImage(user.ImageFile);
+                Task<string> imageName = UploadImage(user.ImageFile, "Users");
                 result.ImagePath = imageName.Result;
                 _userRepository.Add(result);
                 return true;
@@ -59,13 +59,13 @@ namespace Next.Platform.Application.Services
             }
        
         }
-        public bool IsUnique(string phoneNumber)
+        public bool NumberIsUnique(string phoneNumber)
         {
             User result = _userRepository.FindBy(u => u.PhoneNumber == phoneNumber).FirstOrDefault();
             if (result == null) return true; // mean this number not used
             return false;
         }
-        public  async Task<string> UploadImage(IFormFile imageFile)
+        public  async Task<string> UploadImage(IFormFile imageFile , string folderName)
         {
             if (imageFile == null)
             {
@@ -76,7 +76,7 @@ namespace Next.Platform.Application.Services
             string fileName = Path.GetFileNameWithoutExtension(imageFile.FileName);
             string extension = Path.GetExtension(imageFile.FileName);
             string imageName = fileName + DateTime.Now.ToString("yymmssfff") + extension;
-            string path = Path.Combine(wwwRootPath + "\\Images\\", imageName);
+            string path = Path.Combine(wwwRootPath + "\\Images\\" + folderName +"\\", imageName);
             try
             {
                 using (var fileStream = new FileStream(path, FileMode.Create))
