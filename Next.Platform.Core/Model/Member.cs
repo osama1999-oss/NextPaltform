@@ -10,5 +10,6 @@ namespace Next.Platform.Core.Model
         public string PhoneNumber { get; set; }
         public string Password{ get; set; }
         public string ImagePath{ get; set; }
+        public bool IsVerified { get; set; }  
     }
 }

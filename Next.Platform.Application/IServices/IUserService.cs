@@ -11,9 +11,11 @@ namespace Next.Platform.Application.IServices
    public interface IUserService
    {
        string Login(UserAuthenticationDto user);
-       bool Register(UserModelDto user);
+       Guid Register(UserModelDto user);
        public bool NumberIsUnique(string phoneNumber);
        Task<string> UploadImage(IFormFile imaFile, string folderName);
-          
+       string AddPhoneNumber(UserPhoneModelDto user);
+       string CheckVerificationCode(VerificationCodeDto verificationCode);
+
    }
 }

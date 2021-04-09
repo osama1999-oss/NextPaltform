@@ -28,12 +28,29 @@ namespace Next.Platform.Web.Controllers.Api
         public ActionResult Register([FromForm] UserModelDto user)
         {
 
-            bool result = _userService.Register(user);
-            if (result)
-                return Ok(new {result});
-            return BadRequest();
-
+            Guid result = _userService.Register(user);
+            
+            return Ok(new {result});
         }
+
+        [HttpPost]
+        [Route("SendVerificationCode")]
+        public ActionResult SendVerificationCode([FromForm] UserPhoneModelDto user)
+        {
+            string result= _userService.AddPhoneNumber(user);
+            if (string.IsNullOrEmpty(result))
+                return BadRequest();
+            return Ok(result);
+        }
+
+        [HttpPost]
+        [Route("CheckVerificationCode")]
+        public ActionResult CheckVerificationCode([FromForm] VerificationCodeDto verificationCode)
+        { 
+            string status =  _userService.CheckVerificationCode(verificationCode);
+             return Ok(status);
+        }
+
         [HttpPost]
         [Route("OwnerRegistration")]
         public ActionResult Register([FromForm] OwnerModelDto owner)

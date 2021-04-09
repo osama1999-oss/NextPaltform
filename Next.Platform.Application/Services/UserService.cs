@@ -20,17 +20,20 @@ namespace Next.Platform.Application.Services
        private readonly IAuthenticateService _authenticateService;
        private readonly IMapper _mapper;
        private readonly IWebHostEnvironment _hostEnvironment;
-        public UserService(IWebHostEnvironment hostEnvironment,IRepository<User> useRepository, IMapper mapper, IAuthenticateService authenticateService)
+       private readonly IVerificationService _verificationService;
+        public UserService(IWebHostEnvironment hostEnvironment, IVerificationService verificationService,
+            IRepository<User> useRepository, IMapper mapper, IAuthenticateService authenticateService)
         {
             this._userRepository = useRepository;
             this._mapper = mapper;
             this._authenticateService = authenticateService;
             this._hostEnvironment = hostEnvironment;
+            this._verificationService = verificationService;
         }
 
         public string Login(UserAuthenticationDto userDto)
         {
-             var result= _userRepository.FindBy(u => u.PhoneNumber == userDto.PhoneNumber && u.Password == userDto.Password)
+             var result= _userRepository.FindBy(u => u.PhoneNumber == userDto.PhoneNumber && u.Password == userDto.Password && u.IsVerified == true)
                     .FirstOrDefault();
              string token = null;
              if(result != null)
@@ -41,18 +44,19 @@ namespace Next.Platform.Application.Services
 
             return token;
         }
-
-        public bool Register(UserModelDto user)
+        public Guid Register(UserModelDto user)
         {
             try
             {
+                // user => phone number 
                 var result = _mapper.Map<User>(user);
                 result.Id=Guid.NewGuid();
                 Task<string> imageName = UploadImage(user.ImageFile, "Users");
                 result.ImagePath = imageName.Result;
                 _userRepository.Add(result);
-                return true;
+                return result.Id;
             }
+
             catch (Exception e)
             {
                 throw;
@@ -93,6 +97,29 @@ namespace Next.Platform.Application.Services
             return imageName;
 
         }
-
-    }
+        public string AddPhoneNumber(UserPhoneModelDto user)
+        {
+            User result = _userRepository.FindBy(u => u.Id == user.Id).FirstOrDefault();
+            result.PhoneNumber = user.PhoneNumber;
+            _userRepository.Edit(result);
+            string phoneNumber = _verificationService.NumberToInternationalFormat(result.PhoneNumber);
+            string status =  _verificationService.SendVerificationCode(phoneNumber);
+            if (status == "pending")
+                return result.Id.ToString();
+            return null;
+        }
+        public string CheckVerificationCode(VerificationCodeDto verificationCode)
+        {
+            User user = _userRepository.FindBy(u => u.Id == verificationCode.Id).FirstOrDefault();
+            string phoneNumber =   _verificationService.NumberToInternationalFormat(user.PhoneNumber);
+            string status =  _verificationService.CheckVerificationCode(phoneNumber, verificationCode.Code);
+            if (status == "approved")
+            {
+                user.IsVerified = true;
+                _userRepository.Edit(user);
+            }
+                
+            return status;
+        }
+   }
 }

@@ -19,6 +19,7 @@ using Next.Platform.Application.Configuration;
 using Next.Platform.Application.Dtos;
 using Next.Platform.Application.DtosValidator;
 using Next.Platform.Web.Validation;
+using Twilio;
 
 namespace Next.Platform.Web
 {
@@ -91,6 +92,10 @@ namespace Next.Platform.Web
            
             //AddAutoMapper
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+            var accountSid = Configuration["Twilio:AccountSID"];
+            var authToken = Configuration["Twilio:AuthToken"];
+            TwilioClient.Init(accountSid, authToken);
         }
 
         

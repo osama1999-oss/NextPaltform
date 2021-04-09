@@ -4,9 +4,10 @@ using System.Text;
 
 namespace Next.Platform.Application.Dtos
 {
-  public  class UserAuthenticationDto
+   public class UserPhoneModelDto
     {
+        public Guid Id { get; set; }
         public string PhoneNumber { get; set; }
-        public string Password { get; set; }
+
     }
 }

@@ -31,6 +31,7 @@ namespace Next.Platform.Application.Configuration
             services.AddTransient<IAuthenticateService, AuthenticationService>();
             services.AddTransient<IOwnerService, OwnerService>();
             services.AddTransient<IAdminService, AdminService>();
+            services.AddTransient<IVerificationService, VerificationService>();
             services.AddHttpContextAccessor();
             
 
