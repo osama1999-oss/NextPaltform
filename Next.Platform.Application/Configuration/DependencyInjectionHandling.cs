@@ -25,6 +25,7 @@ namespace Next.Platform.Application.Configuration
             services.AddTransient<IRepository<User>, Repository<User>>();
             services.AddTransient<IRepository<Owner>, Repository<Owner>>();
             services.AddTransient<IRepository<Admin>, Repository<Admin>>();
+            services.AddTransient<IRepository<PlayGround>, Repository<PlayGround>>();
 
             //Services
             services.AddTransient<IUserService, UserService>();
@@ -32,6 +33,7 @@ namespace Next.Platform.Application.Configuration
             services.AddTransient<IOwnerService, OwnerService>();
             services.AddTransient<IAdminService, AdminService>();
             services.AddTransient<IVerificationService, VerificationService>();
+            services.AddTransient<IPlayGroundService, PlayGroundService>();
             services.AddHttpContextAccessor();
             
 

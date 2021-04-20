@@ -23,6 +23,8 @@ namespace Next.Platform.Application.MappingConfiguration
             CreateMap<MemberModelDto, User>();
             CreateMap<MemberModelDto, Owner>();
 
+            CreateMap<PlayGroundDto, PlayGround>();
+
 
         }
     }
