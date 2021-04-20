@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace Next.Platform.Application.Dtos
 {
-   public class UserModelDto
+   public class MemberModelDto
     {
         public string Name { get; set; }
         public string Location { get; set; }

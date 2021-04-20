@@ -25,17 +25,17 @@ namespace Next.Platform.Web.Controllers.Api
 
         [HttpPost]
         [Route("UserRegistration")]
-        public ActionResult Register([FromForm] UserModelDto user)
+        public ActionResult UserRegister([FromForm] MemberModelDto user)
         {
 
-            Guid result = _userService.Register(user);
+            string result = _userService.Register(user);
             
             return Ok(new {result});
         }
 
         [HttpPost]
-        [Route("SendVerificationCode")]
-        public ActionResult SendVerificationCode([FromForm] UserPhoneModelDto user)
+        [Route("SendUserVerificationCode")]
+        public ActionResult SendUserVerificationCode([FromForm] PhoneModelDto user)
         {
             string result= _userService.AddPhoneNumber(user);
             if (string.IsNullOrEmpty(result))
@@ -44,8 +44,8 @@ namespace Next.Platform.Web.Controllers.Api
         }
 
         [HttpPost]
-        [Route("CheckVerificationCode")]
-        public ActionResult CheckVerificationCode([FromForm] VerificationCodeDto verificationCode)
+        [Route("CheckUserVerificationCode")]
+        public ActionResult CheckUserVerificationCode([FromForm] VerificationCodeDto verificationCode)
         { 
             string status =  _userService.CheckVerificationCode(verificationCode);
              return Ok(status);
@@ -53,16 +53,31 @@ namespace Next.Platform.Web.Controllers.Api
 
         [HttpPost]
         [Route("OwnerRegistration")]
-        public ActionResult Register([FromForm] OwnerModelDto owner)
+        public ActionResult OwnerRegister([FromForm] MemberModelDto owner)
         {
 
-            bool result = _ownerService.Register(owner);
-            if (result)
+            string result = _ownerService.Register(owner);
                 return Ok(new { result });
-            return BadRequest();
 
         }
 
+        [HttpPost]
+        [Route("SendOwnerVerificationCode")]
+        public ActionResult SendOwnerVerificationCode([FromForm] PhoneModelDto owner)
+        {
+            string result = _ownerService.AddPhoneNumber(owner);
+            if (string.IsNullOrEmpty(result))
+                return BadRequest();
+            return Ok(result);
+        }
+
+        [HttpPost]
+        [Route("CheckOwnerVerificationCode")]
+        public ActionResult CheckOwnerVerificationCode([FromForm] VerificationCodeDto verificationCode)
+        {
+            string status = _ownerService.CheckVerificationCode(verificationCode);
+            return Ok(status);
+        }
 
 
 

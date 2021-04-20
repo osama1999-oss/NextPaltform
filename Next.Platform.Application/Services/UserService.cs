@@ -35,7 +35,7 @@ namespace Next.Platform.Application.Services
         {
              var result= _userRepository.FindBy(u => u.PhoneNumber == userDto.PhoneNumber && u.Password == userDto.Password && u.IsVerified == true)
                     .FirstOrDefault();
-             string token = null;
+             string token = null;   
              if(result != null)
              {
                  var userDtoResult = _mapper.Map<UserAuthenticationDto>(result);
@@ -44,7 +44,7 @@ namespace Next.Platform.Application.Services
 
             return token;
         }
-        public Guid Register(UserModelDto user)
+        public string Register(MemberModelDto user)
         {
             try
             {
@@ -54,9 +54,8 @@ namespace Next.Platform.Application.Services
                 Task<string> imageName = UploadImage(user.ImageFile, "Users");
                 result.ImagePath = imageName.Result;
                 _userRepository.Add(result);
-                return result.Id;
+                return result.Id.ToString();
             }
-
             catch (Exception e)
             {
                 throw;
@@ -97,8 +96,11 @@ namespace Next.Platform.Application.Services
             return imageName;
 
         }
-        public string AddPhoneNumber(UserPhoneModelDto user)
+        public string AddPhoneNumber(PhoneModelDto user)
         {
+            if (!NumberIsUnique(user.PhoneNumber))
+                return "This Number Already In USe";
+
             User result = _userRepository.FindBy(u => u.Id == user.Id).FirstOrDefault();
             result.PhoneNumber = user.PhoneNumber;
             _userRepository.Edit(result);
@@ -106,7 +108,7 @@ namespace Next.Platform.Application.Services
             string status =  _verificationService.SendVerificationCode(phoneNumber);
             if (status == "pending")
                 return result.Id.ToString();
-            return null;
+            return "We have problem to send Verification Code";
         }
         public string CheckVerificationCode(VerificationCodeDto verificationCode)
         {

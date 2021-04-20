@@ -10,8 +10,10 @@ namespace Next.Platform.Application.IServices
    public interface IOwnerService
    {
        string Login(OwnerAuthenticationDto ownerDto);
-       bool Register(OwnerModelDto owner);
+       string Register(MemberModelDto owner);
        public bool EmailIsUnique(string email);
        Task<string> UploadImage(IFormFile imaFile);
+       string AddPhoneNumber(PhoneModelDto user);
+       string CheckVerificationCode(VerificationCodeDto verificationCode);
     }
 }
