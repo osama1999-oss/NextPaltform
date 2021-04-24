@@ -19,16 +19,16 @@ namespace Next.Platform.Application.Services
        private readonly IRepository<User> _userRepository;
        private readonly IAuthenticateService _authenticateService;
        private readonly IMapper _mapper;
-       private readonly IWebHostEnvironment _hostEnvironment;
        private readonly IVerificationService _verificationService;
-        public UserService(IWebHostEnvironment hostEnvironment, IVerificationService verificationService,
+       private readonly ICommonService _commonService;
+        public UserService(ICommonService commonService, IVerificationService verificationService,
             IRepository<User> useRepository, IMapper mapper, IAuthenticateService authenticateService)
         {
             this._userRepository = useRepository;
             this._mapper = mapper;
             this._authenticateService = authenticateService;
-            this._hostEnvironment = hostEnvironment;
             this._verificationService = verificationService;
+            this._commonService = commonService;
         }
 
         public string Login(UserAuthenticationDto userDto)
@@ -51,8 +51,7 @@ namespace Next.Platform.Application.Services
                 // user => phone number 
                 var result = _mapper.Map<User>(user);
                 result.Id=Guid.NewGuid();
-                Task<string> imageName = UploadImage(user.ImageFile, "Users");
-                result.ImagePath = imageName.Result;
+                result.ImagePath =UploadImage(user.ImageFile, "Users");
                 _userRepository.Add(result);
                 return result.Id.ToString();
             }
@@ -68,33 +67,15 @@ namespace Next.Platform.Application.Services
             if (result == null) return true; // mean this number not used
             return false;
         }
-        public  async Task<string> UploadImage(IFormFile imageFile , string folderName)
+        public  string UploadImage(IFormFile imageFile , string folderName)
         {
             if (imageFile == null)
+                return "DefaultPersonImage.png";
+            else
             {
-                return "DefaultImage.png";
+                var imageName = _commonService.UploadImage(imageFile, "Users");
+                return imageName.Result;
             }
-
-            string wwwRootPath = _hostEnvironment.WebRootPath;  
-            string fileName = Path.GetFileNameWithoutExtension(imageFile.FileName);
-            string extension = Path.GetExtension(imageFile.FileName);
-            string imageName = fileName + DateTime.Now.ToString("yymmssfff") + extension;
-            string path = Path.Combine(wwwRootPath + "\\Images\\" + folderName +"\\", imageName);
-            try
-            {
-                using (var fileStream = new FileStream(path, FileMode.Create))
-                {
-                  await  imageFile.CopyToAsync(fileStream);
-                }
-            }
-            catch (Exception e)
-            {
-                throw ;
-                return "DefaultImage.png";
-            }
-
-            return imageName;
-
         }
         public string AddPhoneNumber(PhoneModelDto user)
         {

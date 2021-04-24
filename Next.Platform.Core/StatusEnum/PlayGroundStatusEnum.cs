@@ -9,6 +9,7 @@ namespace Next.Platform.Core.StatusEnum
         Pending = 0,
         Closed = 1,
         Approved = 2,
-        InMaintenance = 3
+        InMaintenance = 3,
+        Canceled = 4
     }
 }

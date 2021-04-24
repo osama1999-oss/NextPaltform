@@ -13,7 +13,7 @@ namespace Next.Platform.Application.IServices
        string Login(UserAuthenticationDto user);
        string Register(MemberModelDto user);
        public bool NumberIsUnique(string phoneNumber);
-       Task<string> UploadImage(IFormFile imaFile, string folderName);
+       string UploadImage(IFormFile imaFile, string folderName);
        string AddPhoneNumber(PhoneModelDto user);
        string CheckVerificationCode(VerificationCodeDto verificationCode);
 

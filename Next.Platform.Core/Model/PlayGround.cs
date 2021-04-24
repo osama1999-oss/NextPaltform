@@ -23,6 +23,7 @@ namespace Next.Platform.Core.Model
         public List<PreferredPlayGround> PreferredPlayGrounds { get; set; }
         public List<PlayGroundBooking> PlayGroundBookings { get; set; }
         public List<Comment> Comments { get; set; }
+        public List<PlayGroundImages> PlayGroundImages { get; set; }
         public PlayGroundStatusEnum PlayGroundStatusId { get; set; }
 
 

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Next.Platform.Infrastructure.AppContext;
 
 namespace Next.Platform.Infrastructure.Migrations
 {
     [DbContext(typeof(NextPlatformDbContext))]
-    partial class NextPlatformDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210424111721_v6")]
+    partial class v6
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -217,25 +219,6 @@ namespace Next.Platform.Infrastructure.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Next.Platform.Core.Model.PlayGroundImages", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Path")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("PlayGroundId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PlayGroundId");
-
-                    b.ToTable("PlayGroundImages");
-                });
-
             modelBuilder.Entity("Next.Platform.Core.Model.PlayGroundStatus", b =>
                 {
                     b.Property<int>("Id")
@@ -407,15 +390,6 @@ namespace Next.Platform.Infrastructure.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Next.Platform.Core.Model.PlayGroundImages", b =>
-                {
-                    b.HasOne("Next.Platform.Core.Model.PlayGround", null)
-                        .WithMany("PlayGroundImages")
-                        .HasForeignKey("PlayGroundId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("Next.Platform.Core.Model.PreferredPlayGround", b =>
                 {
                     b.HasOne("Next.Platform.Core.Model.PlayGround", null)
@@ -467,8 +441,6 @@ namespace Next.Platform.Infrastructure.Migrations
                     b.Navigation("Comments");
 
                     b.Navigation("PlayGroundBookings");
-
-                    b.Navigation("PlayGroundImages");
 
                     b.Navigation("PreferredPlayGrounds");
                 });

@@ -86,6 +86,7 @@ namespace Next.Platform.Infrastructure.AppContext
         public DbSet<PlayGroundStatus> PlayGroundStatus { get; set; }
         public DbSet<PreferredPlayGround> PreferredPlayGrounds { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<PlayGroundImages> PlayGroundImages { get; set; }
 
     }
 }

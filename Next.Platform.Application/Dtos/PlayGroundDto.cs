@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Microsoft.AspNetCore.Http;
 using Next.Platform.Core.StatusEnum;
 
 namespace Next.Platform.Application.Dtos
@@ -20,5 +21,7 @@ namespace Next.Platform.Application.Dtos
         public bool HasShower { get; set; }
         public bool HasToilet { get; set; }
         public Guid OwnerId { get; set; }
+        public IFormFile[] ImageFile { get; set; }
+
     }
 }

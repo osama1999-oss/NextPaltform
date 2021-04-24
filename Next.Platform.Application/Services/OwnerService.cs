@@ -19,8 +19,9 @@ namespace Next.Platform.Application.Services
        private readonly IMapper _mapper;
        private readonly IUserService _userService;
        private readonly IVerificationService _verificationService;
+       private readonly ICommonService _commonService;
 
-        public OwnerService(IUserService userService,IRepository<Owner> ownerRepository, IMapper mapper, IVerificationService verificationService,
+        public OwnerService(ICommonService commonService, IUserService userService,IRepository<Owner> ownerRepository, IMapper mapper, IVerificationService verificationService,
             IAuthenticateService authenticateService)
         {
             this._ownerRepository = ownerRepository;
@@ -28,7 +29,7 @@ namespace Next.Platform.Application.Services
             this._authenticateService = authenticateService;
             this._userService = userService;
             this._verificationService = verificationService;
-
+            this._commonService = commonService;
         }
 
         public string Login(OwnerAuthenticationDto ownerDto)
@@ -38,7 +39,6 @@ namespace Next.Platform.Application.Services
             var owner = _mapper.Map<OwnerAuthenticationDto>(result);
             return owner.Email;
         }
-
         public string Register(MemberModelDto owner)
         {
             try
@@ -47,8 +47,7 @@ namespace Next.Platform.Application.Services
                 {
                     var result = _mapper.Map<Owner>(owner);
                     result.Id = Guid.NewGuid();
-                    Task<string> imageName = UploadImage(owner.ImageFile);
-                    result.ImagePath = imageName.Result;
+                    result.ImagePath = UploadImage(owner.ImageFile);
                     _ownerRepository.Add(result);
                     return result.Id.ToString();
                 }
@@ -59,17 +58,21 @@ namespace Next.Platform.Application.Services
                 throw;
             }
         }
-
         public bool EmailIsUnique(string email)
         {
             Owner result = _ownerRepository.FindBy(u => u.Email == email).FirstOrDefault();
             if (result == null) return true; // mean this number not used
             return false;
         }
-
-        public Task<string> UploadImage(IFormFile imageFile)
+        public string UploadImage(IFormFile imageFile)
         {
-          return  _userService.UploadImage(imageFile, "Owners");
+            if (imageFile == null)
+                return "DefaultPersonImage.png";
+            else
+            {
+                var imageName = _commonService.UploadImage(imageFile, "Owners");
+                return imageName.Result;
+            }
         }
         public string AddPhoneNumber(PhoneModelDto owner)
         {
