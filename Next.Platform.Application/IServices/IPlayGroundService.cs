@@ -4,6 +4,7 @@ using System.Text;
 using Microsoft.AspNetCore.Http;
 using Next.Platform.Application.Dtos;
 using Next.Platform.Application.DtosValidator;
+using Next.Platform.Application.ViewModel;
 using Next.Platform.Core.Model;
 
 namespace Next.Platform.Application.IServices
@@ -14,5 +15,6 @@ namespace Next.Platform.Application.IServices
       PlayGround GetById(Guid playGroundId);
       void Save(PlayGround playGround);
       void AddImages(IFormFile[] imageFile, Guid playGroundId);
+     List<PlayGroundApprovalViewModel> GetPlayGroundApprovalViewModel();
   }
 }

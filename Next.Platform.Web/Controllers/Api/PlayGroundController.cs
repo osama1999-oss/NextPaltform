@@ -28,5 +28,13 @@ namespace Next.Platform.Web.Controllers.Api
 
             return Ok(new { result });
         }
+        [HttpGet]
+        [Route("GetPlayGroundApprovalViewModel")]
+        public ActionResult GetPlayGroundApprovalViewModel()
+        {
+            var result = _playGroundService.GetPlayGroundApprovalViewModel();
+
+            return Ok(new { result });
+        }
     }
 }

@@ -7,8 +7,10 @@ using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Next.Platform.Application.Dtos;
 using Next.Platform.Application.IServices;
+using Next.Platform.Application.ViewModel;
 using Next.Platform.Core.Model;
 using Next.Platform.Core.StatusEnum;
+using Next.Platform.Infrastructure.AppContext;
 using Next.Platform.Infrastructure.IBaseRepository;
 
 namespace Next.Platform.Application.Services
@@ -19,13 +21,15 @@ namespace Next.Platform.Application.Services
        private readonly IRepository<PlayGroundImages> _playGroundImagesRepository;
        private readonly IMapper _mapper;
        private readonly ICommonService _commonService;
+       private readonly NextPlatformDbContext _context;
 
-       public PlayGroundService(IRepository<PlayGroundImages> playGroundImagesRepository,IRepository<PlayGround> playGroundRepository, IMapper mapper, ICommonService commonService)
+       public PlayGroundService(NextPlatformDbContext context,IRepository<PlayGroundImages> playGroundImagesRepository,IRepository<PlayGround> playGroundRepository, IMapper mapper, ICommonService commonService)
         {
             this._playGroundRepository = playGroundRepository;
             this._mapper = mapper;
             this._commonService = commonService;
             this._playGroundImagesRepository = playGroundImagesRepository;
+            this._context = context;
         }
         public Guid CreatePlayGround(PlayGroundDto playGroundDto)
         {
@@ -38,18 +42,14 @@ namespace Next.Platform.Application.Services
                AddImages(playGroundDto.ImageFile,resualt.Id);
                return resualt.Id;
         }
-
-
         public PlayGround GetById(Guid playGroundId)
         {
             return _playGroundRepository.FindBy(p => p.Id == playGroundId).FirstOrDefault();
         }
-
         public void Save(PlayGround playGround)
         {
             _playGroundRepository.Edit(playGround);
         }
-
         public void AddImages(IFormFile[] imageFile ,Guid playGroundId)
         {
 
@@ -73,6 +73,31 @@ namespace Next.Platform.Application.Services
 
             }
      
+        }
+        public List<PlayGroundApprovalViewModel> GetPlayGroundApprovalViewModel()
+        {
+            
+            var result = from p in _context.PlayGrounds
+                join o in _context.Owners on p.OwnerId equals o.Id
+                where p.PlayGroundStatusId == PlayGroundStatusEnum.Pending
+                         select new PlayGroundApprovalViewModel()
+                {
+                    OwnerName = o.Name,
+                    PlayGroundId = p.Id,
+                    PlayGroundName = p.Name,
+                    PriceEvening = p.PriceEvening,
+                    PriceMorning = p.PriceMorning,
+                    PlayGroundLocation = p.Location ,
+                    Email = o.Email
+                };
+            List<PlayGroundApprovalViewModel> approvalViewModels = new List<PlayGroundApprovalViewModel>();
+            foreach (var res in result)
+            {
+                res.Images =  _playGroundImagesRepository.FindBy(p => p.PlayGroundId == res.PlayGroundId).Select(p => p.Path).ToList();
+                approvalViewModels.Add(res);
+            }
+
+            return approvalViewModels;
         }
    }
 }
