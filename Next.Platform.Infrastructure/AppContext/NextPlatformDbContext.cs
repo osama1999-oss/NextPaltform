@@ -55,6 +55,48 @@ namespace Next.Platform.Infrastructure.AppContext
                         })
                 );
             // ================================================
+            //modelBuilder
+            //    .Entity<User>()
+            //    .Property(e => e.MemberStatusId)
+            //    .HasConversion<int>();
+
+            //modelBuilder
+            //    .Entity<MemberStatus>()
+            //    .Property(e => e.Id)
+            //    .HasConversion<int>();
+
+            //modelBuilder
+            //    .Entity<MemberStatus>().HasData(
+            //        Enum.GetValues(typeof(MemberStatusEnum))
+            //            .Cast<MemberStatusEnum>()
+            //            .Select(e => new MemberStatus()
+            //            {
+            //                Id = e,
+            //                Status = e.ToString()
+            //            })
+            //    );
+            // ================================================
+            modelBuilder
+                .Entity<Owner>()
+                .Property(e => e.MemberStatusId)
+                .HasConversion<int>();
+
+            modelBuilder
+                .Entity<MemberStatus>()
+                .Property(e => e.Id)
+                .HasConversion<int>();
+
+            modelBuilder
+                .Entity<MemberStatus>().HasData(
+                    Enum.GetValues(typeof(MemberStatusEnum))
+                        .Cast<MemberStatusEnum>()
+                        .Select(e => new MemberStatus()
+                        {
+                            Id = e,
+                            Status = e.ToString()
+                        })
+                );
+            // ================================================
             modelBuilder
                 .Entity<PlayGroundBooking>()
                 .Property(e => e.PlayGroundBookingStatusId)
@@ -84,6 +126,7 @@ namespace Next.Platform.Infrastructure.AppContext
         public DbSet<PlayGroundBooking> PlayGroundBookings { get; set; }
         public DbSet<PlayGroundBookingStatus> PlayGroundBookingStatus { get; set; }
         public DbSet<PlayGroundStatus> PlayGroundStatus { get; set; }
+        public DbSet<MemberStatus> MemberStatus { get; set; }
         public DbSet<PreferredPlayGround> PreferredPlayGrounds { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<PlayGroundImages> PlayGroundImages { get; set; }

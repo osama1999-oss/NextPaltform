@@ -18,7 +18,7 @@ namespace Next.Platform.Application.Configuration
         {
             services.AddDbContext<NextPlatformDbContext>(options =>
             {
-                options.UseSqlServer("Data Source=. ;Initial Catalog=NextPlatformDb;Persist Security Info=True;User ID=sa;Password=osamahamdy;MultipleActiveResultSets=True;Connect Timeout=30;");
+                options.UseSqlServer("Data Source=. ;Initial Catalog=NextPlatformDbv2;Persist Security Info=True;User ID=sa;Password=osamahamdy;MultipleActiveResultSets=True;Connect Timeout=30;");
             });
 
             // Repository

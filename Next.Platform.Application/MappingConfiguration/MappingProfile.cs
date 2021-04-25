@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using AutoMapper;
 using Next.Platform.Application.Dtos;
+using Next.Platform.Application.ViewModel;
 using Next.Platform.Core.Model;
 
 namespace Next.Platform.Application.MappingConfiguration
@@ -24,6 +25,8 @@ namespace Next.Platform.Application.MappingConfiguration
             CreateMap<MemberModelDto, Owner>();
 
             CreateMap<PlayGroundDto, PlayGround>();
+            CreateMap<Owner, OwnerInAdminViewModel>()
+                .ForMember(dest => dest.Status,source => source.MapFrom(src => src.MemberStatusId));
 
 
         }

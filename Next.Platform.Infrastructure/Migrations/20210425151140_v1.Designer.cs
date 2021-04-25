@@ -10,7 +10,7 @@ using Next.Platform.Infrastructure.AppContext;
 namespace Next.Platform.Infrastructure.Migrations
 {
     [DbContext(typeof(NextPlatformDbContext))]
-    [Migration("20210405151544_v1")]
+    [Migration("20210425151140_v1")]
     partial class v1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -68,6 +68,36 @@ namespace Next.Platform.Infrastructure.Migrations
                     b.ToTable("Comments");
                 });
 
+            modelBuilder.Entity("Next.Platform.Core.Model.MemberStatus", b =>
+                {
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("MemberStatus");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 0,
+                            Status = "Blocked"
+                        },
+                        new
+                        {
+                            Id = 1,
+                            Status = "Banned"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Status = "Available"
+                        });
+                });
+
             modelBuilder.Entity("Next.Platform.Core.Model.Owner", b =>
                 {
                     b.Property<Guid>("Id")
@@ -77,8 +107,17 @@ namespace Next.Platform.Infrastructure.Migrations
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("ImagePath")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsVerified")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Location")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("MemberStatusId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
@@ -90,6 +129,8 @@ namespace Next.Platform.Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("MemberStatusId");
 
                     b.ToTable("Owners");
                 });
@@ -213,6 +254,25 @@ namespace Next.Platform.Infrastructure.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Next.Platform.Core.Model.PlayGroundImages", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Path")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("PlayGroundId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PlayGroundId");
+
+                    b.ToTable("PlayGroundImages");
+                });
+
             modelBuilder.Entity("Next.Platform.Core.Model.PlayGroundStatus", b =>
                 {
                     b.Property<int>("Id")
@@ -245,6 +305,11 @@ namespace Next.Platform.Infrastructure.Migrations
                         {
                             Id = 3,
                             Status = "InMaintenance"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Status = "Canceled"
                         });
                 });
 
@@ -301,6 +366,12 @@ namespace Next.Platform.Infrastructure.Migrations
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("ImagePath")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsVerified")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Location")
                         .HasColumnType("nvarchar(max)");
 
@@ -337,6 +408,15 @@ namespace Next.Platform.Infrastructure.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Next.Platform.Core.Model.Owner", b =>
+                {
+                    b.HasOne("Next.Platform.Core.Model.MemberStatus", null)
+                        .WithMany("Owners")
+                        .HasForeignKey("MemberStatusId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Next.Platform.Core.Model.PlayGround", b =>
                 {
                     b.HasOne("Next.Platform.Core.Model.Owner", null)
@@ -369,6 +449,15 @@ namespace Next.Platform.Infrastructure.Migrations
                     b.HasOne("Next.Platform.Core.Model.User", null)
                         .WithMany("PlayGroundBookings")
                         .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Next.Platform.Core.Model.PlayGroundImages", b =>
+                {
+                    b.HasOne("Next.Platform.Core.Model.PlayGround", null)
+                        .WithMany("PlayGroundImages")
+                        .HasForeignKey("PlayGroundId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -414,6 +503,11 @@ namespace Next.Platform.Infrastructure.Migrations
                     b.Navigation("Replays");
                 });
 
+            modelBuilder.Entity("Next.Platform.Core.Model.MemberStatus", b =>
+                {
+                    b.Navigation("Owners");
+                });
+
             modelBuilder.Entity("Next.Platform.Core.Model.Owner", b =>
                 {
                     b.Navigation("PlayGrounds");
@@ -424,6 +518,8 @@ namespace Next.Platform.Infrastructure.Migrations
                     b.Navigation("Comments");
 
                     b.Navigation("PlayGroundBookings");
+
+                    b.Navigation("PlayGroundImages");
 
                     b.Navigation("PreferredPlayGrounds");
                 });

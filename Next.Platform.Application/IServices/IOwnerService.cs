@@ -4,6 +4,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Next.Platform.Application.Dtos;
+using Next.Platform.Application.ViewModel;
+using Next.Platform.Core.Model;
 
 namespace Next.Platform.Application.IServices
 {
@@ -15,5 +17,9 @@ namespace Next.Platform.Application.IServices
        string UploadImage(IFormFile imaFile);
        string AddPhoneNumber(PhoneModelDto user);
        string CheckVerificationCode(VerificationCodeDto verificationCode);
-    }
+       bool NumberIsUnique(string phoneNumber);
+       List<Owner> Get();
+       Owner GetById(Guid id);
+       void Save(Owner owner);
+   }
 }

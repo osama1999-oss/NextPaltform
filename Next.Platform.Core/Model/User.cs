@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Next.Platform.Core.StatusEnum;
 
 namespace Next.Platform.Core.Model
 {
@@ -11,5 +12,6 @@ namespace Next.Platform.Core.Model
         public List<Comment> Comments { get; set; }
         public List<Replay> Replays { get; set; }
 
+        //public MemberStatusEnum MemberStatusId { get; set; }
     }
 }

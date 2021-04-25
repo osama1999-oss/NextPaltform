@@ -7,7 +7,9 @@ using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Next.Platform.Application.Dtos;
 using Next.Platform.Application.IServices;
+using Next.Platform.Application.ViewModel;
 using Next.Platform.Core.Model;
+using Next.Platform.Core.StatusEnum;
 using Next.Platform.Infrastructure.IBaseRepository;
 
 namespace Next.Platform.Application.Services
@@ -15,19 +17,14 @@ namespace Next.Platform.Application.Services
    public class OwnerService :IOwnerService
    {
        private readonly IRepository<Owner> _ownerRepository;
-       private readonly IAuthenticateService _authenticateService;
        private readonly IMapper _mapper;
-       private readonly IUserService _userService;
        private readonly IVerificationService _verificationService;
        private readonly ICommonService _commonService;
 
-        public OwnerService(ICommonService commonService, IUserService userService,IRepository<Owner> ownerRepository, IMapper mapper, IVerificationService verificationService,
-            IAuthenticateService authenticateService)
+        public OwnerService(ICommonService commonService, IRepository<Owner> ownerRepository, IMapper mapper, IVerificationService verificationService)
         {
             this._ownerRepository = ownerRepository;
             this._mapper = mapper;
-            this._authenticateService = authenticateService;
-            this._userService = userService;
             this._verificationService = verificationService;
             this._commonService = commonService;
         }
@@ -36,6 +33,8 @@ namespace Next.Platform.Application.Services
         {
             var result = _ownerRepository.FindBy(u => u.Email == ownerDto.Email && u.Password == ownerDto.Password && u.IsVerified == true)
                 .FirstOrDefault();
+            if (result == null)
+                return "Email or Password Is In Valid";
             var owner = _mapper.Map<OwnerAuthenticationDto>(result);
             return owner.Email;
         }
@@ -47,6 +46,7 @@ namespace Next.Platform.Application.Services
                 {
                     var result = _mapper.Map<Owner>(owner);
                     result.Id = Guid.NewGuid();
+                    result.MemberStatusId = MemberStatusEnum.Available;
                     result.ImagePath = UploadImage(owner.ImageFile);
                     _ownerRepository.Add(result);
                     return result.Id.ToString();
@@ -76,7 +76,7 @@ namespace Next.Platform.Application.Services
         }
         public string AddPhoneNumber(PhoneModelDto owner)
         {
-            if (!_userService.NumberIsUnique(owner.PhoneNumber))
+            if (!NumberIsUnique(owner.PhoneNumber))
                 return "This Number Already In USe";
 
             Owner result = _ownerRepository.FindBy(u => u.Id == owner.Id).FirstOrDefault();
@@ -88,6 +88,32 @@ namespace Next.Platform.Application.Services
                 return result.Id.ToString();
             return "We have problem to send Verification Code";
         }
+        public bool NumberIsUnique(string phoneNumber)
+        {
+            Owner result = _ownerRepository.FindBy(u => u.PhoneNumber == phoneNumber).FirstOrDefault();
+            if (result == null) return true; // mean this number not used
+            return false;
+        }
+
+        public List<Owner> Get()
+        {
+
+         List<Owner> owners =  _ownerRepository.Get().ToList();
+         
+         return owners;
+
+        }
+
+        public Owner GetById(Guid id)
+        {
+         return   _ownerRepository.FindBy(o => o.Id == id).FirstOrDefault();
+        }
+
+        public void Save(Owner owner)
+        {
+            _ownerRepository.Edit(owner);
+        }
+
         public string CheckVerificationCode(VerificationCodeDto verificationCode)
         {
             Owner owner = _ownerRepository.FindBy(u => u.Id == verificationCode.Id).FirstOrDefault();
@@ -101,5 +127,7 @@ namespace Next.Platform.Application.Services
 
             return status;
         }
+
+
     }
 }
