@@ -10,8 +10,8 @@ using Next.Platform.Infrastructure.AppContext;
 namespace Next.Platform.Infrastructure.Migrations
 {
     [DbContext(typeof(NextPlatformDbContext))]
-    [Migration("20210425151140_v1")]
-    partial class v1
+    [Migration("20210426124144_v2")]
+    partial class v2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -168,7 +168,7 @@ namespace Next.Platform.Infrastructure.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("OwnerId")
+                    b.Property<Guid>("PlayGroundCategoryId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("PlayGroundStatusId")
@@ -188,7 +188,7 @@ namespace Next.Platform.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("OwnerId");
+                    b.HasIndex("PlayGroundCategoryId");
 
                     b.HasIndex("PlayGroundStatusId");
 
@@ -252,6 +252,34 @@ namespace Next.Platform.Infrastructure.Migrations
                             Id = 2,
                             Status = "Approved"
                         });
+                });
+
+            modelBuilder.Entity("Next.Platform.Core.Model.PlayGroundCategory", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Image")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Location")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("OwnerId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OwnerId");
+
+                    b.ToTable("PlayGroundCategories");
                 });
 
             modelBuilder.Entity("Next.Platform.Core.Model.PlayGroundImages", b =>
@@ -419,9 +447,9 @@ namespace Next.Platform.Infrastructure.Migrations
 
             modelBuilder.Entity("Next.Platform.Core.Model.PlayGround", b =>
                 {
-                    b.HasOne("Next.Platform.Core.Model.Owner", null)
-                        .WithMany("PlayGrounds")
-                        .HasForeignKey("OwnerId")
+                    b.HasOne("Next.Platform.Core.Model.PlayGroundCategory", null)
+                        .WithMany("playGrounds")
+                        .HasForeignKey("PlayGroundCategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -449,6 +477,15 @@ namespace Next.Platform.Infrastructure.Migrations
                     b.HasOne("Next.Platform.Core.Model.User", null)
                         .WithMany("PlayGroundBookings")
                         .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Next.Platform.Core.Model.PlayGroundCategory", b =>
+                {
+                    b.HasOne("Next.Platform.Core.Model.Owner", null)
+                        .WithMany("PlayGroundCategories")
+                        .HasForeignKey("OwnerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -510,7 +547,7 @@ namespace Next.Platform.Infrastructure.Migrations
 
             modelBuilder.Entity("Next.Platform.Core.Model.Owner", b =>
                 {
-                    b.Navigation("PlayGrounds");
+                    b.Navigation("PlayGroundCategories");
                 });
 
             modelBuilder.Entity("Next.Platform.Core.Model.PlayGround", b =>
@@ -527,6 +564,11 @@ namespace Next.Platform.Infrastructure.Migrations
             modelBuilder.Entity("Next.Platform.Core.Model.PlayGroundBookingStatus", b =>
                 {
                     b.Navigation("PlayGroundBookings");
+                });
+
+            modelBuilder.Entity("Next.Platform.Core.Model.PlayGroundCategory", b =>
+                {
+                    b.Navigation("playGrounds");
                 });
 
             modelBuilder.Entity("Next.Platform.Core.Model.PlayGroundStatus", b =>

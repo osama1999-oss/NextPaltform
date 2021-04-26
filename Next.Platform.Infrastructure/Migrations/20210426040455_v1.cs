@@ -101,6 +101,27 @@ namespace Next.Platform.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "PlayGroundCategories",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Location = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    OwnerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PlayGroundCategories", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_PlayGroundCategories_Owners_OwnerId",
+                        column: x => x.OwnerId,
+                        principalTable: "Owners",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "PlayGrounds",
                 columns: table => new
                 {
@@ -116,7 +137,7 @@ namespace Next.Platform.Infrastructure.Migrations
                     HasShower = table.Column<bool>(type: "bit", nullable: false),
                     HasToilet = table.Column<bool>(type: "bit", nullable: false),
                     Rating = table.Column<int>(type: "int", nullable: false),
-                    OwnerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    PlayGroundCategoryId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     PlayGroundStatusId = table.Column<int>(type: "int", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Location = table.Column<string>(type: "nvarchar(max)", nullable: true)
@@ -125,9 +146,9 @@ namespace Next.Platform.Infrastructure.Migrations
                 {
                     table.PrimaryKey("PK_PlayGrounds", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_PlayGrounds_Owners_OwnerId",
-                        column: x => x.OwnerId,
-                        principalTable: "Owners",
+                        name: "FK_PlayGrounds_PlayGroundCategories_PlayGroundCategoryId",
+                        column: x => x.PlayGroundCategoryId,
+                        principalTable: "PlayGroundCategories",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -333,14 +354,19 @@ namespace Next.Platform.Infrastructure.Migrations
                 column: "PlayGroundId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_PlayGroundCategories_OwnerId",
+                table: "PlayGroundCategories",
+                column: "OwnerId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_PlayGroundImages_PlayGroundId",
                 table: "PlayGroundImages",
                 column: "PlayGroundId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PlayGrounds_OwnerId",
+                name: "IX_PlayGrounds_PlayGroundCategoryId",
                 table: "PlayGrounds",
-                column: "OwnerId");
+                column: "PlayGroundCategoryId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_PlayGrounds_PlayGroundStatusId",
@@ -405,10 +431,13 @@ namespace Next.Platform.Infrastructure.Migrations
                 name: "Users");
 
             migrationBuilder.DropTable(
-                name: "Owners");
+                name: "PlayGroundCategories");
 
             migrationBuilder.DropTable(
                 name: "PlayGroundStatus");
+
+            migrationBuilder.DropTable(
+                name: "Owners");
 
             migrationBuilder.DropTable(
                 name: "MemberStatus");

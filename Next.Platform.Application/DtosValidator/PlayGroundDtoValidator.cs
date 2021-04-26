@@ -19,6 +19,7 @@ namespace Next.Platform.Application.DtosValidator
             RuleFor(u => u.To).NotNull().NotEmpty().WithMessage("To is required");
             RuleFor(u => u.PriceEvening).NotNull().NotEmpty().WithMessage("PriceEvening is required");
             RuleFor(u => u.PriceMorning).NotNull().NotEmpty().WithMessage("PriceMorning is required");
+            RuleFor(u => u.Type).NotNull().NotEmpty().WithMessage("Type is required");
 
         }
     }

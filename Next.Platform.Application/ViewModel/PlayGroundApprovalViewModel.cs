@@ -7,6 +7,7 @@ namespace Next.Platform.Application.ViewModel
   public class PlayGroundApprovalViewModel
     {
         public Guid PlayGroundId { get; set; }
+        public Guid PlayGroundCategoryId { get; set; }
         public string PlayGroundName { get; set; }
         public string OwnerName { get; set; }
         public string PlayGroundLocation { get; set; }

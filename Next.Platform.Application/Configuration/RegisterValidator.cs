@@ -17,6 +17,7 @@ namespace Next.Platform.Application.Configuration
             services.AddTransient<IValidator<AdminAuthenticationDto>, AdminAuthenticationDtoValidator>();
             services.AddTransient<IValidator<MemberModelDto>, MemberModelDtoValidator>();
             services.AddTransient<IValidator<PlayGroundDto>, PlayGroundDtoValidator>();
+            services.AddTransient<IValidator<PlayGroundCategoryDto>, PlayGroundCategoryDtoValidator>();
         }
     }
 }

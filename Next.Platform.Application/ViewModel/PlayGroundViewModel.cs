@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Microsoft.AspNetCore.Http;
-using Next.Platform.Core.StatusEnum;
 
-namespace Next.Platform.Application.Dtos
+namespace Next.Platform.Application.ViewModel
 {
-  public class PlayGroundDto
-    { 
+   public class PlayGroundViewModel
+    {
+        public Guid Id { get; set; }
         public string Name { get; set; }
         public string Location { get; set; }
         public string From { get; set; }
@@ -20,9 +19,9 @@ namespace Next.Platform.Application.Dtos
         public bool HasLoacker { get; set; }
         public bool HasShower { get; set; }
         public bool HasToilet { get; set; }
+        public int Rating { get; set; }
         public string Type { get; set; }
-        public Guid PlayGroundCategoryId { get; set; }
-        public IFormFile[] ImageFile { get; set; }
+        public string Status { get; set; }
 
     }
 }

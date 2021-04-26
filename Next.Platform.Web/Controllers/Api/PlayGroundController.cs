@@ -14,9 +14,11 @@ namespace Next.Platform.Web.Controllers.Api
     public class PlayGroundController : ControllerBase
     {
         private readonly IPlayGroundService _playGroundService;
-        public PlayGroundController(IPlayGroundService playGroundService)
+        private readonly IPlayGroundCategoryService _playGroundCategoryService;
+        public PlayGroundController(IPlayGroundCategoryService playGroundCategoryService, IPlayGroundService playGroundService)
         {
             this._playGroundService = playGroundService;
+            this._playGroundCategoryService = playGroundCategoryService;
         }
 
         [HttpPost]
@@ -28,11 +30,44 @@ namespace Next.Platform.Web.Controllers.Api
 
             return Ok(new { result });
         }
+        [HttpPost]
+        [Route("CreatePlayGroundCategory")]
+        public ActionResult CreatePlayGroundCategory([FromForm] PlayGroundCategoryDto playGroundCategoryDto)
+        {
+
+            Guid result = _playGroundCategoryService.CreatePlayGroundCategory(playGroundCategoryDto);
+
+            return Ok(new { result });
+        }
         [HttpGet]
         [Route("GetPlayGroundApprovalViewModel")]
         public ActionResult GetPlayGroundApprovalViewModel()
         {
             var result = _playGroundService.GetPlayGroundApprovalViewModel();
+
+            return Ok(new { result });
+        }
+        [HttpGet]
+        [Route("GetPlayGroundCategories")]
+        public ActionResult GetPlayGroundCategories()
+        {
+            var result = _playGroundCategoryService.GetPlayGroundCategories();
+
+            return Ok(new { result });
+        }
+        [HttpPost]
+        [Route("GetPlayGroundList")]
+        public ActionResult GetPlayGroundList([FromForm] Guid playGroundCategoryId)
+        {
+            var result = _playGroundService.GetPlayGroundlist(playGroundCategoryId);
+
+            return Ok(new { result });
+        }
+        [HttpPost]
+        [Route("GetPlayGround")]
+        public ActionResult GetPlayGround([FromForm] Guid playGroundId)
+        {
+            var result = _playGroundService.GetPlayGround(playGroundId);
 
             return Ok(new { result });
         }

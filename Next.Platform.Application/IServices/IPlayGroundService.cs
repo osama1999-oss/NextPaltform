@@ -16,5 +16,7 @@ namespace Next.Platform.Application.IServices
       void Save(PlayGround playGround);
       void AddImages(IFormFile[] imageFile, Guid playGroundId);
      List<PlayGroundApprovalViewModel> GetPlayGroundApprovalViewModel();
+     List<PlayGroundListViewModel> GetPlayGroundlist(Guid playGroundCategoryId);
+     PlayGroundViewModel GetPlayGround(Guid playGroundId);
   }
 }

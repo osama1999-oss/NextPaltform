@@ -29,6 +29,14 @@ namespace Next.Platform.Application.MappingConfiguration
                 .ForMember(dest => dest.Status,source => source.MapFrom(src => src.MemberStatusId));
 
             CreateMap<User, UserInAdminViewModel>();
+            CreateMap<PlayGroundCategoryDto, PlayGroundCategory>();
+            CreateMap<PlayGroundCategory, PlayGroundCategoriesViewModel>();
+            CreateMap<PlayGround, PlayGroundListViewModel>()
+                .ForMember(dest => dest.Status, source => source.MapFrom(src => src.PlayGroundStatusId));
+          
+            CreateMap<PlayGround, PlayGroundViewModel>()
+                .ForMember(dest => dest.Status, source => source.MapFrom(src => src.PlayGroundStatusId));
+
         }
     }
 }
