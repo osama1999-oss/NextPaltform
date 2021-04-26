@@ -19,8 +19,9 @@ namespace Next.Platform.Application.Services
         private readonly IMapper _mapper;
         private readonly IPlayGroundService _playGroundService;
         private readonly IOwnerService _ownerService;
+        private readonly IUserService _userService;
 
-        public AdminService(IPlayGroundService playGroundService, IRepository<Admin> adminRepository, IOwnerService ownerService,
+        public AdminService(IUserService userService,IPlayGroundService playGroundService, IRepository<Admin> adminRepository, IOwnerService ownerService,
             IMapper mapper, IAuthenticateService authenticateService)
         {
             this._adminRepository = adminRepository;
@@ -28,6 +29,7 @@ namespace Next.Platform.Application.Services
             this._playGroundService = playGroundService;
             this._authenticateService = authenticateService;
             this._ownerService = ownerService;
+            this._userService = userService;
         }
         public string Login(AdminAuthenticationDto adminDto)
         {
@@ -48,12 +50,28 @@ namespace Next.Platform.Application.Services
          return result.PlayGroundStatusId.ToString();
         }
 
-        public List<OwnerInAdminViewModel> Get()
+        public List<OwnerInAdminViewModel> GetOwners()
         {
-          var result =   _ownerService.Get();
+          var result =   _ownerService.Get().Where(o => o.MemberStatusId == MemberStatusEnum.Available);
           List<OwnerInAdminViewModel> ownerInAdminViewModels = _mapper.Map<List<OwnerInAdminViewModel>>(result);
           return ownerInAdminViewModels;
 
+        }
+
+        public List<UserInAdminViewModel> GetUsers()
+        {
+          var result=  _userService.Get();
+          List<UserInAdminViewModel> userInAdminViewModels = _mapper.Map<List<UserInAdminViewModel>>(result);
+          return userInAdminViewModels;
+
+        }
+
+        public List<OwnerInAdminViewModel> GetBlockedOwners()
+        {
+            var results= _ownerService.Get().Where(o => o.MemberStatusId == MemberStatusEnum.Blocked).ToList();
+            List<OwnerInAdminViewModel> ownerInAdminViewModels = _mapper.Map<List<OwnerInAdminViewModel>>(results);
+
+            return ownerInAdminViewModels;
         }
 
         public string BlockOwner(Guid id)

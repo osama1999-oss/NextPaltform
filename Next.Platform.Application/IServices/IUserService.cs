@@ -16,6 +16,7 @@ namespace Next.Platform.Application.IServices
        string UploadImage(IFormFile imaFile, string folderName);
        string AddPhoneNumber(PhoneModelDto user);
        string CheckVerificationCode(VerificationCodeDto verificationCode);
+       List<User> Get();
 
    }
 }

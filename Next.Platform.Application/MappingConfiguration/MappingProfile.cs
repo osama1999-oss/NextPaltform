@@ -28,7 +28,7 @@ namespace Next.Platform.Application.MappingConfiguration
             CreateMap<Owner, OwnerInAdminViewModel>()
                 .ForMember(dest => dest.Status,source => source.MapFrom(src => src.MemberStatusId));
 
-
+            CreateMap<User, UserInAdminViewModel>();
         }
     }
 }

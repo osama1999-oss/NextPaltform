@@ -104,5 +104,12 @@ namespace Next.Platform.Application.Services
                 
             return status;
         }
-   }
+
+        public List<User> Get()
+        {
+            var result =_userRepository.Get().ToList();
+            return result;
+        }
+
+    }
 }

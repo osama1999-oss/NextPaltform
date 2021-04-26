@@ -10,7 +10,9 @@ namespace Next.Platform.Application.IServices
    {
        string Login(AdminAuthenticationDto adminDto);
        string PlaygroundApproval(PlayGroundRequestDto playGroundRequestDto);
-       List<OwnerInAdminViewModel> Get();
+       List<OwnerInAdminViewModel> GetOwners();
+       List<UserInAdminViewModel> GetUsers();
+       List<OwnerInAdminViewModel> GetBlockedOwners();
        string BlockOwner(Guid id);
        string UnBlockOwner(Guid id);
    }

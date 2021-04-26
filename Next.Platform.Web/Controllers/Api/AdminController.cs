@@ -27,10 +27,10 @@ namespace Next.Platform.Web.Controllers.Api
             return Ok(result);
         }
         [HttpGet]
-        [Route("OwnerInAdminViewModel")]
+        [Route("GetOwners")]
         public ActionResult GetOwnerInAdminViewModel()
         {
-            List<OwnerInAdminViewModel> results = _adminService.Get();
+            List<OwnerInAdminViewModel> results = _adminService.GetOwners();
             return Ok(results);
         }
         [HttpPost]
@@ -47,5 +47,20 @@ namespace Next.Platform.Web.Controllers.Api
             string results = _adminService.UnBlockOwner(id);
             return Ok(results);
         }
+        [HttpGet]
+        [Route("GetBlockedOwners")]
+        public ActionResult GetBlockedOwners()
+        {
+            var results = _adminService.GetBlockedOwners();
+            return Ok(results);
+        }
+        [HttpGet]
+        [Route("GetUsers")]
+        public ActionResult GetUsers()
+        {
+            var results = _adminService.GetUsers();
+            return Ok(results);
+        }
+
     }
 }
