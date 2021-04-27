@@ -21,5 +21,6 @@ namespace Next.Platform.Application.IServices
        List<Owner> Get();
        Owner GetById(Guid id);
        void Save(Owner owner);
+       bool IfBlocked(Guid ownerId);
    }
 }

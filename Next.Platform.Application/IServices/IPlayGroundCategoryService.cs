@@ -8,7 +8,7 @@ namespace Next.Platform.Application.IServices
 {
   public interface IPlayGroundCategoryService
     {
-     Guid CreatePlayGroundCategory(PlayGroundCategoryDto playGroundCategoryDto);
+     string CreatePlayGroundCategory(PlayGroundCategoryDto playGroundCategoryDto);
      List<PlayGroundCategoriesViewModel> GetPlayGroundCategories();
 
     }

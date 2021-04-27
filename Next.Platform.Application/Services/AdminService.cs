@@ -15,19 +15,19 @@ namespace Next.Platform.Application.Services
   public  class AdminService : IAdminService
     {
         private readonly IRepository<Admin> _adminRepository;
-        private readonly IAuthenticateService _authenticateService;
+        private readonly ICommonService _commonService;
         private readonly IMapper _mapper;
         private readonly IPlayGroundService _playGroundService;
         private readonly IOwnerService _ownerService;
         private readonly IUserService _userService;
 
         public AdminService(IUserService userService,IPlayGroundService playGroundService, IRepository<Admin> adminRepository, IOwnerService ownerService,
-            IMapper mapper, IAuthenticateService authenticateService)
+            IMapper mapper, ICommonService commonService)
         {
             this._adminRepository = adminRepository;
             this._mapper = mapper;
             this._playGroundService = playGroundService;
-            this._authenticateService = authenticateService;
+            this._commonService = commonService;
             this._ownerService = ownerService;
             this._userService = userService;
         }
@@ -54,6 +54,11 @@ namespace Next.Platform.Application.Services
         {
           var result =   _ownerService.Get().Where(o => o.MemberStatusId == MemberStatusEnum.Available);
           List<OwnerInAdminViewModel> ownerInAdminViewModels = _mapper.Map<List<OwnerInAdminViewModel>>(result);
+
+            foreach (var owner in ownerInAdminViewModels)
+            {
+                owner.Location = _commonService.GetNeighborhood(owner.NeighborhoodId);
+            }
           return ownerInAdminViewModels;
 
         }

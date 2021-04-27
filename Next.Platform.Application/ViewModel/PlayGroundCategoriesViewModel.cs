@@ -6,7 +6,7 @@ namespace Next.Platform.Application.ViewModel
 {
    public class PlayGroundCategoriesViewModel
     {
-
+        public Guid NeighborhoodId { get; set; }
         public string Name { get; set; }
         public string Location { get; set; }
         public decimal Price { get; set; }

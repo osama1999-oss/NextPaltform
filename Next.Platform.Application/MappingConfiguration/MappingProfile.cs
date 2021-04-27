@@ -32,7 +32,8 @@ namespace Next.Platform.Application.MappingConfiguration
             CreateMap<PlayGroundCategoryDto, PlayGroundCategory>();
             CreateMap<PlayGroundCategory, PlayGroundCategoriesViewModel>();
             CreateMap<PlayGround, PlayGroundListViewModel>()
-                .ForMember(dest => dest.Status, source => source.MapFrom(src => src.PlayGroundStatusId));
+                .ForMember(dest => dest.Status, source => source.MapFrom(src => src.PlayGroundStatusId))
+                .ForMember(type => type.Type, source => source.MapFrom(src => src.PlayGroundTypeId));
           
             CreateMap<PlayGround, PlayGroundViewModel>()
                 .ForMember(dest => dest.Status, source => source.MapFrom(src => src.PlayGroundStatusId));

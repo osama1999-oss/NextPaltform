@@ -35,7 +35,7 @@ namespace Next.Platform.Web.Controllers.Api
         public ActionResult CreatePlayGroundCategory([FromForm] PlayGroundCategoryDto playGroundCategoryDto)
         {
 
-            Guid result = _playGroundCategoryService.CreatePlayGroundCategory(playGroundCategoryDto);
+            var result = _playGroundCategoryService.CreatePlayGroundCategory(playGroundCategoryDto);
 
             return Ok(new { result });
         }

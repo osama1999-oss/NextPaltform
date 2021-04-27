@@ -6,8 +6,8 @@ namespace Next.Platform.Core.StatusEnum
 {
   public  enum PlayGroundTypeEnum
     {
-        Ten = 0,
-        Fourteen = 1,
-        TwentyOne =2
+        Ten = 1,
+        Fourteen = 2,
+        TwentyOne =3
     }
 }

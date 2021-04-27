@@ -18,24 +18,28 @@ namespace Next.Platform.Application.Services
        private readonly IRepository<PlayGroundCategory> _playGroundCategoryRepository;
        private readonly ICommonService _commonService;
        private readonly IPlayGroundService _playGroundService;
+       private readonly IOwnerService _ownerService;
 
         public PlayGroundCategoryService(ICommonService  commonService, IPlayGroundService playGroundService,
-            IRepository<PlayGroundCategory> playGroundCategoryRepository, IMapper mapper)
+            IRepository<PlayGroundCategory> playGroundCategoryRepository, IMapper mapper, IOwnerService ownerService)
         {
             this._playGroundCategoryRepository = playGroundCategoryRepository;
             this._mapper = mapper;
             this._commonService = commonService;
             this._playGroundService = playGroundService;
+            this._ownerService = ownerService;
         }
 
-        public Guid CreatePlayGroundCategory(PlayGroundCategoryDto playGroundCategoryDto)
+        public string CreatePlayGroundCategory(PlayGroundCategoryDto playGroundCategoryDto)
         {
+            if (_ownerService.IfBlocked(playGroundCategoryDto.OwnerId))
+                return "This Owner Is Blocked ..  Cant Add Category";
             var result = _mapper.Map<PlayGroundCategory>(playGroundCategoryDto);
             result.Id = Guid.NewGuid();
             result.OwnerId = playGroundCategoryDto.OwnerId;
             result.Image =   _commonService.UploadImage(playGroundCategoryDto.ImageFile, "PlayGroundCategory").Result;
             _playGroundCategoryRepository.Add(result);
-            return result.Id;
+            return result.Id.ToString();
         }
         public List<PlayGroundCategoriesViewModel> GetPlayGroundCategories()
         {
@@ -43,7 +47,7 @@ namespace Next.Platform.Application.Services
             var categories = _mapper.Map<List<PlayGroundCategoriesViewModel>>(result);
             foreach (var category in categories)
             {
-
+                category.Location = _commonService.GetNeighborhood(category.NeighborhoodId);
              category.Count = _playGroundService.GetPlayGroundlist(category.Id).Count;
 
             }

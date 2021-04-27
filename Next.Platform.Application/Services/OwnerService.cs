@@ -114,6 +114,13 @@ namespace Next.Platform.Application.Services
             _ownerRepository.Edit(owner);
         }
 
+        public bool IfBlocked(Guid ownerId)
+        {
+         var result=   _ownerRepository.FindBy(o => o.Id == ownerId).FirstOrDefault();
+         if (result.MemberStatusId == MemberStatusEnum.Blocked) return true;
+         return false;
+        }
+
         public string CheckVerificationCode(VerificationCodeDto verificationCode)
         {
             Owner owner = _ownerRepository.FindBy(u => u.Id == verificationCode.Id).FirstOrDefault();

@@ -19,6 +19,7 @@ namespace Next.Platform.Web.Controllers.Api
         {
             this._adminService = adminService;
         }
+
         [HttpPost]
         [Route("PlaygroundApproval")]
         public ActionResult PlaygroundApproval([FromForm] PlayGroundRequestDto playGroundRequestDto)
