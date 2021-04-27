@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Next.Platform.Application.Dtos;
 using Next.Platform.Application.IServices;
+using Next.Platform.Application.SearchCriteria;
 
 namespace Next.Platform.Web.Controllers.Api
 {
@@ -60,6 +61,14 @@ namespace Next.Platform.Web.Controllers.Api
         public ActionResult GetPlayGroundCategories()
         {
             var result = _playGroundCategoryService.GetPlayGroundCategories();
+
+            return Ok(new { result });
+        }
+        [HttpPost]
+        [Route("Filter")]
+        public ActionResult Filter([FromForm] PlayGroundCategorySearchCriteria categorySearchCriteria)
+        {
+            var result = _playGroundCategoryService.Filter(categorySearchCriteria);
 
             return Ok(new { result });
         }

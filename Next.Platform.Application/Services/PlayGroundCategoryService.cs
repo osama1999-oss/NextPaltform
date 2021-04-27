@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Next.Platform.Application.Dtos;
 using Next.Platform.Application.IServices;
+using Next.Platform.Application.SearchCriteria;
 using Next.Platform.Application.ViewModel;
 using Next.Platform.Core.Model;
 using Next.Platform.Infrastructure.IBaseRepository;
@@ -53,5 +54,31 @@ namespace Next.Platform.Application.Services
             }
             return categories;
         }
-    }
+
+        public List<PlayGroundCategoriesViewModel> Filter(PlayGroundCategorySearchCriteria categorySearchCriteria)
+        {
+            if (categorySearchCriteria.NeighborhoodId == Guid.Empty || categorySearchCriteria.MaxPrice ==
+                0 || categorySearchCriteria.MaxPrice == 0)
+            {
+                return GetPlayGroundCategories();
+            }
+            var result = GetPlayGroundCategories()
+                .Where(p => p.NeighborhoodId == categorySearchCriteria.NeighborhoodId &&
+                            p.Price >= categorySearchCriteria.MinPrice || p.Price <= categorySearchCriteria.MaxPrice);
+            return result.ToList();
+        }
+
+        public List<PlayGroundCategoriesViewModel> Order(string orderBy)
+        {
+            //switch (orderBy)
+            //{
+            //    case "default":
+            //    {
+            //        GetPlayGroundCategories().Sort(p => p.Price);
+            //        break;
+            //    }
+            //}
+            return null;
+        }
+   }
 }
