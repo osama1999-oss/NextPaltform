@@ -19,7 +19,7 @@ namespace Next.Platform.Application.DtosValidator
                 .Matches(@"^(?=.{8,20}$)(?![_.])(?!.*[_.]{2})(\w ?)+[a-zA-Z0-9._]+(?<![_.])$").WithMessage(
                     "Name should be like from 8 characters but no more than  20 characters and no no special characters digits allowed");
            
-            RuleFor(u => u.Location).NotEmpty().NotNull().WithMessage("Location is required");
+            RuleFor(u => u.NeighborhoodId).NotEmpty().NotNull().WithMessage("Location is required");
            
             RuleFor(u => u.Email).NotEmpty().NotNull().WithMessage("Email is required ")
                 .Matches(@"^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$")

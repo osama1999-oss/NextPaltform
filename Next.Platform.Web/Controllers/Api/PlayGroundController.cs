@@ -48,6 +48,14 @@ namespace Next.Platform.Web.Controllers.Api
             return Ok(new { result });
         }
         [HttpGet]
+        [Route("GetPlayGroundTypes")]
+        public ActionResult GetPlayGroundTypes()
+        {
+            var result = _playGroundService.GetTypes();
+
+            return Ok(new { result });
+        }
+        [HttpGet]
         [Route("GetPlayGroundCategories")]
         public ActionResult GetPlayGroundCategories()
         {

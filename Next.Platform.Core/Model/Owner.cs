@@ -7,6 +7,8 @@ namespace Next.Platform.Core.Model
 {
    public class Owner :Member
     {
+        public Guid NeighborhoodId { get; set; }
+
         public List<PlayGroundCategory> PlayGroundCategories { get; set; }
         public MemberStatusEnum MemberStatusId { get; set; }
 

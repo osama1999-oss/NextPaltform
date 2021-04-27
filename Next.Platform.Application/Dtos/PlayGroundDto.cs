@@ -9,7 +9,7 @@ namespace Next.Platform.Application.Dtos
   public class PlayGroundDto
     { 
         public string Name { get; set; }
-        public string Location { get; set; }
+        public Guid NeighborhoodId { get; set; }
         public string From { get; set; }
         public string To { get; set; }
         public decimal PriceEvening { get; set; }
@@ -20,8 +20,8 @@ namespace Next.Platform.Application.Dtos
         public bool HasLoacker { get; set; }
         public bool HasShower { get; set; }
         public bool HasToilet { get; set; }
-        public string Type { get; set; }
         public Guid PlayGroundCategoryId { get; set; }
+        public PlayGroundTypeEnum PlayGroundTypeId { get; set; }
         public IFormFile[] ImageFile { get; set; }
 
     }

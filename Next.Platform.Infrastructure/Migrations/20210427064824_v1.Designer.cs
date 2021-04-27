@@ -10,8 +10,8 @@ using Next.Platform.Infrastructure.AppContext;
 namespace Next.Platform.Infrastructure.Migrations
 {
     [DbContext(typeof(NextPlatformDbContext))]
-    [Migration("20210426124144_v2")]
-    partial class v2
+    [Migration("20210427064824_v1")]
+    partial class v1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -27,16 +27,18 @@ namespace Next.Platform.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Location")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("NeighborhoodId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Password")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("NeighborhoodId");
 
                     b.ToTable("Admins");
                 });
@@ -98,6 +100,20 @@ namespace Next.Platform.Infrastructure.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Next.Platform.Core.Model.Neighborhood", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Neighborhoods");
+                });
+
             modelBuilder.Entity("Next.Platform.Core.Model.Owner", b =>
                 {
                     b.Property<Guid>("Id")
@@ -113,14 +129,14 @@ namespace Next.Platform.Infrastructure.Migrations
                     b.Property<bool>("IsVerified")
                         .HasColumnType("bit");
 
-                    b.Property<string>("Location")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("MemberStatusId")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("NeighborhoodId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Password")
                         .HasColumnType("nvarchar(max)");
@@ -131,6 +147,8 @@ namespace Next.Platform.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("MemberStatusId");
+
+                    b.HasIndex("NeighborhoodId");
 
                     b.ToTable("Owners");
                 });
@@ -162,16 +180,19 @@ namespace Next.Platform.Infrastructure.Migrations
                     b.Property<bool>("HasWater")
                         .HasColumnType("bit");
 
-                    b.Property<string>("Location")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("NeighborhoodId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("PlayGroundCategoryId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("PlayGroundStatusId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PlayGroundTypeId")
                         .HasColumnType("int");
 
                     b.Property<decimal>("PriceEvening")
@@ -188,9 +209,13 @@ namespace Next.Platform.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("NeighborhoodId");
+
                     b.HasIndex("PlayGroundCategoryId");
 
                     b.HasIndex("PlayGroundStatusId");
+
+                    b.HasIndex("PlayGroundTypeId");
 
                     b.ToTable("PlayGrounds");
                 });
@@ -341,6 +366,36 @@ namespace Next.Platform.Infrastructure.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Next.Platform.Core.Model.PlayGroundType", b =>
+                {
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Type")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("PlayGroundTypes");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 0,
+                            Type = "Ten"
+                        },
+                        new
+                        {
+                            Id = 1,
+                            Type = "Fourteen"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Type = "TwentyOne"
+                        });
+                });
+
             modelBuilder.Entity("Next.Platform.Core.Model.PreferredPlayGround", b =>
                 {
                     b.Property<Guid>("UserId")
@@ -371,16 +426,11 @@ namespace Next.Platform.Infrastructure.Migrations
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("UserId1")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("Id");
 
                     b.HasIndex("CommentId");
 
                     b.HasIndex("UserId");
-
-                    b.HasIndex("UserId1");
 
                     b.ToTable("Replay");
                 });
@@ -400,11 +450,11 @@ namespace Next.Platform.Infrastructure.Migrations
                     b.Property<bool>("IsVerified")
                         .HasColumnType("bit");
 
-                    b.Property<string>("Location")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("NeighborhoodId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Password")
                         .HasColumnType("nvarchar(max)");
@@ -414,11 +464,22 @@ namespace Next.Platform.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("NeighborhoodId");
+
                     b.HasIndex("PhoneNumber")
                         .IsUnique()
                         .HasFilter("[PhoneNumber] IS NOT NULL");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("Next.Platform.Core.Model.Admin", b =>
+                {
+                    b.HasOne("Next.Platform.Core.Model.Neighborhood", null)
+                        .WithMany("Admins")
+                        .HasForeignKey("NeighborhoodId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Next.Platform.Core.Model.Comment", b =>
@@ -429,11 +490,13 @@ namespace Next.Platform.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Next.Platform.Core.Model.User", null)
+                    b.HasOne("Next.Platform.Core.Model.User", "User")
                         .WithMany("Comments")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Next.Platform.Core.Model.Owner", b =>
@@ -443,14 +506,26 @@ namespace Next.Platform.Infrastructure.Migrations
                         .HasForeignKey("MemberStatusId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("Next.Platform.Core.Model.Neighborhood", null)
+                        .WithMany("Owners")
+                        .HasForeignKey("NeighborhoodId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Next.Platform.Core.Model.PlayGround", b =>
                 {
-                    b.HasOne("Next.Platform.Core.Model.PlayGroundCategory", null)
+                    b.HasOne("Next.Platform.Core.Model.Neighborhood", null)
+                        .WithMany("PlayGrounds")
+                        .HasForeignKey("NeighborhoodId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Next.Platform.Core.Model.PlayGroundCategory", "PlayGroundCategory")
                         .WithMany("playGrounds")
                         .HasForeignKey("PlayGroundCategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("Next.Platform.Core.Model.PlayGroundStatus", null)
@@ -458,6 +533,14 @@ namespace Next.Platform.Infrastructure.Migrations
                         .HasForeignKey("PlayGroundStatusId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("Next.Platform.Core.Model.PlayGroundType", null)
+                        .WithMany("PlayGrounds")
+                        .HasForeignKey("PlayGroundTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("PlayGroundCategory");
                 });
 
             modelBuilder.Entity("Next.Platform.Core.Model.PlayGroundBooking", b =>
@@ -474,11 +557,13 @@ namespace Next.Platform.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Next.Platform.Core.Model.User", null)
+                    b.HasOne("Next.Platform.Core.Model.User", "User")
                         .WithMany("PlayGroundBookings")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Next.Platform.Core.Model.PlayGroundCategory", b =>
@@ -507,11 +592,13 @@ namespace Next.Platform.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Next.Platform.Core.Model.User", null)
+                    b.HasOne("Next.Platform.Core.Model.User", "User")
                         .WithMany("PreferredPlayGrounds")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Next.Platform.Core.Model.Replay", b =>
@@ -522,17 +609,22 @@ namespace Next.Platform.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Next.Platform.Core.Model.User", "user")
-                        .WithMany()
+                    b.HasOne("Next.Platform.Core.Model.User", "User")
+                        .WithMany("Replays")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("Next.Platform.Core.Model.User", null)
-                        .WithMany("Replays")
-                        .HasForeignKey("UserId1");
+                    b.Navigation("User");
+                });
 
-                    b.Navigation("user");
+            modelBuilder.Entity("Next.Platform.Core.Model.User", b =>
+                {
+                    b.HasOne("Next.Platform.Core.Model.Neighborhood", null)
+                        .WithMany("Users")
+                        .HasForeignKey("NeighborhoodId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Next.Platform.Core.Model.Comment", b =>
@@ -543,6 +635,17 @@ namespace Next.Platform.Infrastructure.Migrations
             modelBuilder.Entity("Next.Platform.Core.Model.MemberStatus", b =>
                 {
                     b.Navigation("Owners");
+                });
+
+            modelBuilder.Entity("Next.Platform.Core.Model.Neighborhood", b =>
+                {
+                    b.Navigation("Admins");
+
+                    b.Navigation("Owners");
+
+                    b.Navigation("PlayGrounds");
+
+                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("Next.Platform.Core.Model.Owner", b =>
@@ -572,6 +675,11 @@ namespace Next.Platform.Infrastructure.Migrations
                 });
 
             modelBuilder.Entity("Next.Platform.Core.Model.PlayGroundStatus", b =>
+                {
+                    b.Navigation("PlayGrounds");
+                });
+
+            modelBuilder.Entity("Next.Platform.Core.Model.PlayGroundType", b =>
                 {
                     b.Navigation("PlayGrounds");
                 });

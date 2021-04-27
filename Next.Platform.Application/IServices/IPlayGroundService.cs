@@ -18,5 +18,6 @@ namespace Next.Platform.Application.IServices
      List<PlayGroundApprovalViewModel> GetPlayGroundApprovalViewModel();
      List<PlayGroundListViewModel> GetPlayGroundlist(Guid playGroundCategoryId);
      PlayGroundViewModel GetPlayGround(Guid playGroundId);
+     List<PlayGroundsTypesViewModel> GetTypes();
   }
 }

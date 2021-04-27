@@ -8,7 +8,7 @@ namespace Next.Platform.Application.Dtos
    public class MemberModelDto
     {
         public string Name { get; set; }
-        public string Location { get; set; }
+        public Guid NeighborhoodId { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
         public string RePassword { get; set; }

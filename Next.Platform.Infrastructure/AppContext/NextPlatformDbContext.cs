@@ -25,11 +25,40 @@ namespace Next.Platform.Infrastructure.AppContext
                 .HasIndex(u => u.PhoneNumber)
                 .IsUnique(true);
 
+            
             modelBuilder.Entity<Replay>()
-                .HasOne(e => e.user)
-                .WithMany()
-                .HasForeignKey(x => x.UserId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .HasOne<User>(s => s.User)
+                .WithMany(g => g.Replays)
+                .HasForeignKey(s => s.UserId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<PlayGroundBooking>()
+                .HasOne<User>(s => s.User)
+                .WithMany(g => g.PlayGroundBookings)
+                .HasForeignKey(s => s.UserId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<PreferredPlayGround>()
+                .HasOne<User>(s => s.User)
+                .WithMany(g => g.PreferredPlayGrounds)
+                .HasForeignKey(s => s.UserId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+
+            modelBuilder.Entity<Comment>()
+                .HasOne<User>(s => s.User)
+                .WithMany(g => g.Comments)
+                .HasForeignKey(s => s.UserId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            
+
+            modelBuilder.Entity<PlayGround>()
+                .HasOne<PlayGroundCategory>(s => s.PlayGroundCategory)
+                .WithMany(g => g.playGrounds)
+                .HasForeignKey(s => s.PlayGroundCategoryId)
+                .OnDelete(DeleteBehavior.NoAction);
+
 
             modelBuilder.Entity<PlayGroundBooking>().HasKey(pgb => new { pgb.UserId, pgb.PlayGroundId });
             modelBuilder.Entity<PreferredPlayGround>().HasKey(ppg => new { ppg.UserId, ppg.PlayGroundId });
@@ -96,6 +125,29 @@ namespace Next.Platform.Infrastructure.AppContext
                             Status = e.ToString()
                         })
                 );
+
+            // ================================================
+            modelBuilder
+                .Entity<PlayGround>()
+                .Property(e => e.PlayGroundTypeId)
+                .HasConversion<int>();
+
+            modelBuilder
+                .Entity<PlayGroundType>()
+                .Property(e => e.Id)
+                .HasConversion<int>();
+
+            modelBuilder
+                .Entity<PlayGroundType>().HasData(
+                    Enum.GetValues(typeof(PlayGroundTypeEnum))
+                        .Cast<PlayGroundTypeEnum>()
+                        .Select(e => new PlayGroundType()
+                        {
+                            Id = e,
+                            Type = e.ToString()
+                        })
+                );
+
             // ================================================
             modelBuilder
                 .Entity<PlayGroundBooking>()
@@ -131,6 +183,8 @@ namespace Next.Platform.Infrastructure.AppContext
         public DbSet<User> Users { get; set; }
         public DbSet<PlayGroundImages> PlayGroundImages { get; set; }
         public DbSet<PlayGroundCategory> PlayGroundCategories { get; set; }
+        public DbSet<PlayGroundType> PlayGroundTypes { get; set; }
+        public DbSet<Neighborhood> Neighborhoods { get; set; }
 
     }
 }

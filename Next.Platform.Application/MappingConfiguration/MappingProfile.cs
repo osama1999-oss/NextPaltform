@@ -36,7 +36,8 @@ namespace Next.Platform.Application.MappingConfiguration
           
             CreateMap<PlayGround, PlayGroundViewModel>()
                 .ForMember(dest => dest.Status, source => source.MapFrom(src => src.PlayGroundStatusId));
-
+            CreateMap<PlayGroundType, PlayGroundsTypesViewModel>();
+            CreateMap<Neighborhood, NeighborhoodViewModel>();
         }
     }
 }

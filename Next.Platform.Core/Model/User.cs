@@ -7,6 +7,8 @@ namespace Next.Platform.Core.Model
 {
   public  class User:Member
     {
+        public Guid NeighborhoodId { get; set; }
+
         public List<PreferredPlayGround> PreferredPlayGrounds{ get; set; }
         public List<PlayGroundBooking> PlayGroundBookings{ get; set; }
         public List<Comment> Comments { get; set; }

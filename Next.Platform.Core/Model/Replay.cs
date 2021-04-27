@@ -11,6 +11,6 @@ namespace Next.Platform.Core.Model
 
         public Guid CommentId { get; set; }
         public Guid UserId { get; set; }
-        public User user{ get; set; }
+        public User User{ get; set; }
     }
 }

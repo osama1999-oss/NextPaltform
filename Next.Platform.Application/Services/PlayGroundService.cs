@@ -22,15 +22,17 @@ namespace Next.Platform.Application.Services
        private readonly IMapper _mapper;
        private readonly ICommonService _commonService;
        private readonly NextPlatformDbContext _context;
+       private readonly IRepository<PlayGroundType> _playGroundTypeRepository;
 
        public PlayGroundService(NextPlatformDbContext context,IRepository<PlayGroundImages> playGroundImagesRepository,
-           IRepository<PlayGround> playGroundRepository, IMapper mapper, ICommonService commonService)
+           IRepository<PlayGround> playGroundRepository, IMapper mapper, ICommonService commonService, IRepository<PlayGroundType> playGroundTypeRepository)
         {
             this._playGroundRepository = playGroundRepository;
             this._mapper = mapper;
             this._commonService = commonService;
             this._playGroundImagesRepository = playGroundImagesRepository;
             this._context = context;
+            this._playGroundTypeRepository = playGroundTypeRepository;
         }
         public Guid CreatePlayGround(PlayGroundDto playGroundDto)
         {
@@ -38,7 +40,7 @@ namespace Next.Platform.Application.Services
                result.Id =Guid.NewGuid();
                result.Rating = 0;
                result.PlayGroundStatusId = PlayGroundStatusEnum.Pending;
-               result.PlayGroundCategoryId = playGroundDto.PlayGroundCategoryId;
+               result.PlayGroundCategory.Id = playGroundDto.PlayGroundCategoryId;
                _playGroundRepository.Add(result);
                AddImages(playGroundDto.ImageFile, result.Id);
                return result.Id;
@@ -78,30 +80,30 @@ namespace Next.Platform.Application.Services
         public List<PlayGroundApprovalViewModel> GetPlayGroundApprovalViewModel()
         {
 
-            var result = from o in _context.Owners
-                         join pc in _context.PlayGroundCategories on o.Id equals pc.OwnerId
-                         join ps in _context.PlayGrounds on pc.Id equals ps.PlayGroundCategoryId
-                         where ps.PlayGroundStatusId == PlayGroundStatusEnum.Pending
-                         select new PlayGroundApprovalViewModel()
-                         {
-                             PlayGroundCategoryId = pc.Id,
-                             OwnerName = o.Name,
-                             PlayGroundId = ps.Id,  
-                             PlayGroundName = ps.Name,
-                             PriceEvening = ps.PriceEvening,
-                             PriceMorning = ps.PriceMorning,
-                             PlayGroundLocation = ps.Location,
-                             Email = o.Email
-                         };
+            //var result = from o in _context.Owners
+            //             join pc in _context.PlayGroundCategories on o.Id equals pc.OwnerId
+            //             join ps in _context.PlayGrounds on pc.Id equals ps.PlayGroundCategoryId
+            //             where ps.PlayGroundStatusId == PlayGroundStatusEnum.Pending
+            //             select new PlayGroundApprovalViewModel()
+            //             {
+            //                 PlayGroundCategoryId = pc.Id,
+            //                 OwnerName = o.Name,
+            //                 PlayGroundId = ps.Id,  
+            //                 PlayGroundName = ps.Name,
+            //                 PriceEvening = ps.PriceEvening,
+            //                 PriceMorning = ps.PriceMorning,
+            //                 PlayGroundLocation = ps.Location,
+            //                 Email = o.Email
+            //             };
 
             List<PlayGroundApprovalViewModel> approvalViewModels = new List<PlayGroundApprovalViewModel>();
-            foreach (var res in result)
-            {
-                res.Images = _playGroundImagesRepository.FindBy(p => p.PlayGroundId == res.PlayGroundId).Select(p => p.Path).ToList();
-                approvalViewModels.Add(res);
-            }
+            //foreach (var res in result)
+            //{
+            //    res.Images = _playGroundImagesRepository.FindBy(p => p.PlayGroundId == res.PlayGroundId).Select(p => p.Path).ToList();
+            //    approvalViewModels.Add(res);
+            //}
 
-            var x = approvalViewModels.GroupBy(p => p.PlayGroundCategoryId);
+            //var x = approvalViewModels.GroupBy(p => p.PlayGroundCategoryId);
 
             return approvalViewModels;
         }
@@ -118,6 +120,13 @@ namespace Next.Platform.Application.Services
             var result = _playGroundRepository.FindBy(p => p.Id == playGroundId && p.PlayGroundStatusId !=PlayGroundStatusEnum.Canceled ).FirstOrDefault();
             var playGround = _mapper.Map<PlayGroundViewModel>(result);
             return playGround;
+        }
+
+        public List<PlayGroundsTypesViewModel> GetTypes()
+        {
+            var result = _playGroundTypeRepository.Get().ToList();
+            var types = _mapper.Map<List<PlayGroundsTypesViewModel>>(result);
+            return types;
         }
 
 

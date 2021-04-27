@@ -12,6 +12,7 @@ namespace Next.Platform.Core.Model
 
         public Guid PlayGroundId { get; set; }
         public Guid UserId { get; set; }
+        public User User { get; set; }
         public List<Replay> Replays { get; set; }
 
     }

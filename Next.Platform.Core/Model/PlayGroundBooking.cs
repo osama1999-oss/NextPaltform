@@ -13,6 +13,7 @@ namespace Next.Platform.Core.Model
         public PlayGroundBookingStatusEnum PlayGroundBookingStatusId { get; set; }
 
         public Guid UserId { get; set; }
+        public User User { get; set; }
         public Guid PlayGroundId { get; set; }
     }
 }

@@ -8,20 +8,6 @@ namespace Next.Platform.Infrastructure.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Admins",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Password = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Location = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Admins", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "MemberStatus",
                 columns: table => new
                 {
@@ -31,6 +17,18 @@ namespace Next.Platform.Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_MemberStatus", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Neighborhoods",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Neighborhoods", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -58,21 +56,35 @@ namespace Next.Platform.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Users",
+                name: "PlayGroundTypes",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Location = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    Password = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ImagePath = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    IsVerified = table.Column<bool>(type: "bit", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false),
+                    Type = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Users", x => x.Id);
+                    table.PrimaryKey("PK_PlayGroundTypes", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Admins",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    NeighborhoodId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Password = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Admins", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Admins_Neighborhoods_NeighborhoodId",
+                        column: x => x.NeighborhoodId,
+                        principalTable: "Neighborhoods",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -80,9 +92,9 @@ namespace Next.Platform.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    NeighborhoodId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     MemberStatusId = table.Column<int>(type: "int", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Location = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Password = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -98,6 +110,36 @@ namespace Next.Platform.Infrastructure.Migrations
                         principalTable: "MemberStatus",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Owners_Neighborhoods_NeighborhoodId",
+                        column: x => x.NeighborhoodId,
+                        principalTable: "Neighborhoods",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Users",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    NeighborhoodId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    Password = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ImagePath = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsVerified = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Users", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Users_Neighborhoods_NeighborhoodId",
+                        column: x => x.NeighborhoodId,
+                        principalTable: "Neighborhoods",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -108,6 +150,7 @@ namespace Next.Platform.Infrastructure.Migrations
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Location = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Image = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     OwnerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
@@ -137,24 +180,36 @@ namespace Next.Platform.Infrastructure.Migrations
                     HasShower = table.Column<bool>(type: "bit", nullable: false),
                     HasToilet = table.Column<bool>(type: "bit", nullable: false),
                     Rating = table.Column<int>(type: "int", nullable: false),
+                    PlayGroundTypeId = table.Column<int>(type: "int", nullable: false),
+                    NeighborhoodId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     PlayGroundCategoryId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     PlayGroundStatusId = table.Column<int>(type: "int", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Location = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_PlayGrounds", x => x.Id);
                     table.ForeignKey(
+                        name: "FK_PlayGrounds_Neighborhoods_NeighborhoodId",
+                        column: x => x.NeighborhoodId,
+                        principalTable: "Neighborhoods",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
                         name: "FK_PlayGrounds_PlayGroundCategories_PlayGroundCategoryId",
                         column: x => x.PlayGroundCategoryId,
                         principalTable: "PlayGroundCategories",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_PlayGrounds_PlayGroundStatus_PlayGroundStatusId",
                         column: x => x.PlayGroundStatusId,
                         principalTable: "PlayGroundStatus",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_PlayGrounds_PlayGroundTypes_PlayGroundTypeId",
+                        column: x => x.PlayGroundTypeId,
+                        principalTable: "PlayGroundTypes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -182,8 +237,7 @@ namespace Next.Platform.Infrastructure.Migrations
                         name: "FK_Comments_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -216,8 +270,7 @@ namespace Next.Platform.Infrastructure.Migrations
                         name: "FK_PlayGroundBookings_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -259,8 +312,7 @@ namespace Next.Platform.Infrastructure.Migrations
                         name: "FK_PreferredPlayGrounds_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -270,8 +322,7 @@ namespace Next.Platform.Infrastructure.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Text = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CommentId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    UserId1 = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -286,14 +337,7 @@ namespace Next.Platform.Infrastructure.Migrations
                         name: "FK_Replay_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Replay_Users_UserId1",
-                        column: x => x.UserId1,
-                        principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.InsertData(
@@ -328,6 +372,21 @@ namespace Next.Platform.Infrastructure.Migrations
                     { 4, "Canceled" }
                 });
 
+            migrationBuilder.InsertData(
+                table: "PlayGroundTypes",
+                columns: new[] { "Id", "Type" },
+                values: new object[,]
+                {
+                    { 0, "Ten" },
+                    { 1, "Fourteen" },
+                    { 2, "TwentyOne" }
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Admins_NeighborhoodId",
+                table: "Admins",
+                column: "NeighborhoodId");
+
             migrationBuilder.CreateIndex(
                 name: "IX_Comments_PlayGroundId",
                 table: "Comments",
@@ -342,6 +401,11 @@ namespace Next.Platform.Infrastructure.Migrations
                 name: "IX_Owners_MemberStatusId",
                 table: "Owners",
                 column: "MemberStatusId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Owners_NeighborhoodId",
+                table: "Owners",
+                column: "NeighborhoodId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_PlayGroundBookings_PlayGroundBookingStatusId",
@@ -364,6 +428,11 @@ namespace Next.Platform.Infrastructure.Migrations
                 column: "PlayGroundId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_PlayGrounds_NeighborhoodId",
+                table: "PlayGrounds",
+                column: "NeighborhoodId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_PlayGrounds_PlayGroundCategoryId",
                 table: "PlayGrounds",
                 column: "PlayGroundCategoryId");
@@ -372,6 +441,11 @@ namespace Next.Platform.Infrastructure.Migrations
                 name: "IX_PlayGrounds_PlayGroundStatusId",
                 table: "PlayGrounds",
                 column: "PlayGroundStatusId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PlayGrounds_PlayGroundTypeId",
+                table: "PlayGrounds",
+                column: "PlayGroundTypeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_PreferredPlayGrounds_PlayGroundId",
@@ -389,9 +463,9 @@ namespace Next.Platform.Infrastructure.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Replay_UserId1",
-                table: "Replay",
-                column: "UserId1");
+                name: "IX_Users_NeighborhoodId",
+                table: "Users",
+                column: "NeighborhoodId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Users_PhoneNumber",
@@ -437,10 +511,16 @@ namespace Next.Platform.Infrastructure.Migrations
                 name: "PlayGroundStatus");
 
             migrationBuilder.DropTable(
+                name: "PlayGroundTypes");
+
+            migrationBuilder.DropTable(
                 name: "Owners");
 
             migrationBuilder.DropTable(
                 name: "MemberStatus");
+
+            migrationBuilder.DropTable(
+                name: "Neighborhoods");
         }
     }
 }
