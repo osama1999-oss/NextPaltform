@@ -40,7 +40,7 @@ namespace Next.Platform.Application.Services
                result.Id =Guid.NewGuid();
                result.Rating = 0;
                result.PlayGroundStatusId = PlayGroundStatusEnum.Pending;
-               result.PlayGroundCategory.Id = playGroundDto.PlayGroundCategoryId;
+               result.PlayGroundCategoryId = playGroundDto.PlayGroundCategoryId;
                _playGroundRepository.Add(result);
                AddImages(playGroundDto.ImageFile, result.Id);
                return result.Id;

@@ -11,6 +11,6 @@ namespace Next.Platform.Core.Model
         public List<Admin> Admins { get; set; }
         public List<Owner> Owners { get; set; }
         public List<User> Users { get; set; }
-        public List<PlayGround> PlayGrounds { get; set; }
+        public List<PlayGroundCategory> PlayGroundCategories { get; set; }
     }
 }

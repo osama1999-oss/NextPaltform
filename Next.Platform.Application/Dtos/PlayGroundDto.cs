@@ -9,7 +9,6 @@ namespace Next.Platform.Application.Dtos
   public class PlayGroundDto
     { 
         public string Name { get; set; }
-        public Guid NeighborhoodId { get; set; }
         public string From { get; set; }
         public string To { get; set; }
         public decimal PriceEvening { get; set; }

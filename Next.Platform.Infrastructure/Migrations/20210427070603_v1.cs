@@ -148,7 +148,7 @@ namespace Next.Platform.Infrastructure.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Location = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    NeighborhoodId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Image = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     OwnerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
@@ -157,11 +157,16 @@ namespace Next.Platform.Infrastructure.Migrations
                 {
                     table.PrimaryKey("PK_PlayGroundCategories", x => x.Id);
                     table.ForeignKey(
+                        name: "FK_PlayGroundCategories_Neighborhoods_NeighborhoodId",
+                        column: x => x.NeighborhoodId,
+                        principalTable: "Neighborhoods",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
                         name: "FK_PlayGroundCategories_Owners_OwnerId",
                         column: x => x.OwnerId,
                         principalTable: "Owners",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -181,7 +186,6 @@ namespace Next.Platform.Infrastructure.Migrations
                     HasToilet = table.Column<bool>(type: "bit", nullable: false),
                     Rating = table.Column<int>(type: "int", nullable: false),
                     PlayGroundTypeId = table.Column<int>(type: "int", nullable: false),
-                    NeighborhoodId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     PlayGroundCategoryId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     PlayGroundStatusId = table.Column<int>(type: "int", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true)
@@ -189,12 +193,6 @@ namespace Next.Platform.Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_PlayGrounds", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_PlayGrounds_Neighborhoods_NeighborhoodId",
-                        column: x => x.NeighborhoodId,
-                        principalTable: "Neighborhoods",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_PlayGrounds_PlayGroundCategories_PlayGroundCategoryId",
                         column: x => x.PlayGroundCategoryId,
@@ -418,6 +416,11 @@ namespace Next.Platform.Infrastructure.Migrations
                 column: "PlayGroundId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_PlayGroundCategories_NeighborhoodId",
+                table: "PlayGroundCategories",
+                column: "NeighborhoodId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_PlayGroundCategories_OwnerId",
                 table: "PlayGroundCategories",
                 column: "OwnerId");
@@ -426,11 +429,6 @@ namespace Next.Platform.Infrastructure.Migrations
                 name: "IX_PlayGroundImages_PlayGroundId",
                 table: "PlayGroundImages",
                 column: "PlayGroundId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_PlayGrounds_NeighborhoodId",
-                table: "PlayGrounds",
-                column: "NeighborhoodId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_PlayGrounds_PlayGroundCategoryId",

@@ -32,6 +32,12 @@ namespace Next.Platform.Infrastructure.AppContext
                 .HasForeignKey(s => s.UserId)
                 .OnDelete(DeleteBehavior.NoAction);
 
+            modelBuilder.Entity<PlayGroundCategory>()
+                .HasOne<Owner>(s => s.Owner)
+                .WithMany(g => g.PlayGroundCategories)
+                .HasForeignKey(s => s.OwnerId)
+                .OnDelete(DeleteBehavior.NoAction);
+
             modelBuilder.Entity<PlayGroundBooking>()
                 .HasOne<User>(s => s.User)
                 .WithMany(g => g.PlayGroundBookings)

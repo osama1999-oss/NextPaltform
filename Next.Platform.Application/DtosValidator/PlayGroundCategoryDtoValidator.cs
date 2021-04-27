@@ -14,9 +14,6 @@ namespace Next.Platform.Application.DtosValidator
             RuleFor(u => u.Name).NotNull().NotEmpty().WithMessage("Name is required")
                 .Matches(@"^(?=.{3,20}$)(?![_.])(?!.*[_.]{2})(\w ?)+[a-zA-Z0-9._]+(?<![_.])$").WithMessage(
                     "Name should be like from 3 characters but no more than  20 characters and no no special characters digits allowed");
-            RuleFor(u => u.Location).NotNull().NotEmpty().WithMessage("Location is required")
-                .Matches(@"^(?=.{3,20}$)(?![_.])(?!.*[_.]{2})(\w ?)+[a-zA-Z0-9._]+(?<![_.])$").WithMessage(
-                    "Location should be like from 3 characters but no more than  20 characters and no no special characters digits allowed");
             RuleFor(u => u.Price).NotNull().NotEmpty().WithMessage("Price is required");
         }
     }

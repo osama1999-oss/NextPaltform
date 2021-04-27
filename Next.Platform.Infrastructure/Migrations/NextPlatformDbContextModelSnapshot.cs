@@ -181,9 +181,6 @@ namespace Next.Platform.Infrastructure.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("NeighborhoodId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<Guid>("PlayGroundCategoryId")
                         .HasColumnType("uniqueidentifier");
 
@@ -206,8 +203,6 @@ namespace Next.Platform.Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("NeighborhoodId");
 
                     b.HasIndex("PlayGroundCategoryId");
 
@@ -286,11 +281,11 @@ namespace Next.Platform.Infrastructure.Migrations
                     b.Property<string>("Image")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Location")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("NeighborhoodId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("OwnerId")
                         .HasColumnType("uniqueidentifier");
@@ -299,6 +294,8 @@ namespace Next.Platform.Infrastructure.Migrations
                         .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("NeighborhoodId");
 
                     b.HasIndex("OwnerId");
 
@@ -514,12 +511,6 @@ namespace Next.Platform.Infrastructure.Migrations
 
             modelBuilder.Entity("Next.Platform.Core.Model.PlayGround", b =>
                 {
-                    b.HasOne("Next.Platform.Core.Model.Neighborhood", null)
-                        .WithMany("PlayGrounds")
-                        .HasForeignKey("NeighborhoodId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Next.Platform.Core.Model.PlayGroundCategory", "PlayGroundCategory")
                         .WithMany("playGrounds")
                         .HasForeignKey("PlayGroundCategoryId")
@@ -566,11 +557,19 @@ namespace Next.Platform.Infrastructure.Migrations
 
             modelBuilder.Entity("Next.Platform.Core.Model.PlayGroundCategory", b =>
                 {
-                    b.HasOne("Next.Platform.Core.Model.Owner", null)
+                    b.HasOne("Next.Platform.Core.Model.Neighborhood", null)
                         .WithMany("PlayGroundCategories")
-                        .HasForeignKey("OwnerId")
+                        .HasForeignKey("NeighborhoodId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("Next.Platform.Core.Model.Owner", "Owner")
+                        .WithMany("PlayGroundCategories")
+                        .HasForeignKey("OwnerId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Owner");
                 });
 
             modelBuilder.Entity("Next.Platform.Core.Model.PlayGroundImages", b =>
@@ -641,7 +640,7 @@ namespace Next.Platform.Infrastructure.Migrations
 
                     b.Navigation("Owners");
 
-                    b.Navigation("PlayGrounds");
+                    b.Navigation("PlayGroundCategories");
 
                     b.Navigation("Users");
                 });
