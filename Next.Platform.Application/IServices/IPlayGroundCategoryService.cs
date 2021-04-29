@@ -13,5 +13,6 @@ namespace Next.Platform.Application.IServices
      List<PlayGroundCategoriesViewModel> GetPlayGroundCategories();
      List<PlayGroundCategoriesViewModel> Filter(PlayGroundCategorySearchCriteria categorySearchCriteria);
      List<PlayGroundCategoriesViewModel> Order(string orderBy);
+     string GetLocation(Guid playGroundCategoryId);
     }
 }

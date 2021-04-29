@@ -33,10 +33,11 @@ namespace Next.Platform.Application.Services
         }
         public string Login(AdminAuthenticationDto adminDto)
         {
-            var result = _adminRepository.FindBy(u => u.Name == adminDto.Name && u.Password == adminDto.Password)
+            Admin result = _adminRepository.FindBy(u => u.Name == adminDto.Name && u.Password == adminDto.Password)
                 .FirstOrDefault();
-            AdminAuthenticationDto admin = _mapper.Map<AdminAuthenticationDto>(result);
-            return admin.Name;
+            if (result == null)
+                return "unauthorized";
+            return result.Id.ToString();
         }
 
         public string PlaygroundApproval(PlayGroundRequestDto playGroundRequestDto)
@@ -66,8 +67,8 @@ namespace Next.Platform.Application.Services
         public List<UserInAdminViewModel> GetUsers()
         {
           var result=  _userService.Get();
-          List<UserInAdminViewModel> userInAdminViewModels = _mapper.Map<List<UserInAdminViewModel>>(result);
-          return userInAdminViewModels;
+         
+          return result;
 
         }
 

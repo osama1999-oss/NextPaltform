@@ -18,7 +18,7 @@ namespace Next.Platform.Application.Configuration
         {
             services.AddDbContext<NextPlatformDbContext>(options =>
             {
-                options.UseSqlServer("Data Source=. ;Initial Catalog=NextPlatformDbv8;Persist Security Info=True;User ID=sa;Password=osamahamdy;MultipleActiveResultSets=True;Connect Timeout=30;");
+                options.UseSqlServer("Data Source=. ;Initial Catalog=NextPlatformDbv10;Persist Security Info=True;User ID=sa;Password=osamahamdy;MultipleActiveResultSets=True;Connect Timeout=30;");
             });
 
             // Repository
@@ -30,6 +30,7 @@ namespace Next.Platform.Application.Configuration
             services.AddTransient<IRepository<PlayGroundCategory>, Repository<PlayGroundCategory>>();
             services.AddTransient<IRepository<PlayGroundType>, Repository<PlayGroundType>>();
             services.AddTransient<IRepository<Neighborhood>, Repository<Neighborhood>>();
+            services.AddTransient<IRepository<PlayGroundBooking>, Repository<PlayGroundBooking>>();
 
             //Services
             services.AddTransient<IUserService, UserService>();
@@ -40,6 +41,7 @@ namespace Next.Platform.Application.Configuration
             services.AddTransient<IPlayGroundService, PlayGroundService>();
             services.AddTransient<ICommonService, CommonService>();
             services.AddTransient<IPlayGroundCategoryService, PlayGroundCategoryService>();
+            services.AddTransient<IPlayGroundBookingService, PlayGroundBookingService>();
             services.AddHttpContextAccessor();
             
 

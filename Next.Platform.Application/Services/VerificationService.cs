@@ -9,7 +9,10 @@ namespace Next.Platform.Application.Services
 {
   public  class VerificationService: IVerificationService
     {
-        
+        public VerificationService()
+        {
+            
+        }
         public string SendVerificationCode(string to)
         {
             string  pathServiceSid = "VA888a34af78a72a9324e1459fd9f5bfd4";

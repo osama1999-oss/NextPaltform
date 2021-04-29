@@ -178,6 +178,9 @@ namespace Next.Platform.Infrastructure.Migrations
                     b.Property<bool>("HasWater")
                         .HasColumnType("bit");
 
+                    b.Property<string>("Location")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
@@ -215,29 +218,32 @@ namespace Next.Platform.Infrastructure.Migrations
 
             modelBuilder.Entity("Next.Platform.Core.Model.PlayGroundBooking", b =>
                 {
-                    b.Property<Guid>("UserId")
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("PlayGroundId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("BookingIn")
+                    b.Property<DateTime>("From")
                         .HasColumnType("datetime2");
-
-                    b.Property<string>("Form")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("PlayGroundBookingStatusId")
                         .HasColumnType("int");
 
-                    b.Property<string>("To")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<Guid>("PlayGroundId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("UserId", "PlayGroundId");
+                    b.Property<DateTime>("To")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("PlayGroundBookingStatusId");
 
                     b.HasIndex("PlayGroundId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("PlayGroundBookings");
                 });

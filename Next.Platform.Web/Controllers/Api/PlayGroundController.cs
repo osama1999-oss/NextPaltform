@@ -26,7 +26,7 @@ namespace Next.Platform.Web.Controllers.Api
         [Route("CreatePlayGround")]
         public ActionResult CreatePlayGround([FromForm] PlayGroundDto playGround)
         {
-
+            playGround.Location = _playGroundCategoryService.GetLocation(playGround.PlayGroundCategoryId);
             Guid result = _playGroundService.CreatePlayGround(playGround);
 
             return Ok(new { result });
@@ -61,6 +61,14 @@ namespace Next.Platform.Web.Controllers.Api
         public ActionResult GetPlayGroundCategories()
         {
             var result = _playGroundCategoryService.GetPlayGroundCategories();
+
+            return Ok(new { result });
+        }
+        [HttpGet]
+        [Route("GetAllPlayGrounds")]
+        public ActionResult GetAllPlayGrounds()
+        {
+            var result = _playGroundService.GetAllPlayPlayGroundStatus();
 
             return Ok(new { result });
         }

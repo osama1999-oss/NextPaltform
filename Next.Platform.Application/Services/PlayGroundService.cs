@@ -22,10 +22,12 @@ namespace Next.Platform.Application.Services
        private readonly IMapper _mapper;
        private readonly ICommonService _commonService;
        private readonly NextPlatformDbContext _context;
+       private readonly IPlayGroundBookingService _bookingService;
        private readonly IRepository<PlayGroundType> _playGroundTypeRepository;
 
        public PlayGroundService(NextPlatformDbContext context,IRepository<PlayGroundImages> playGroundImagesRepository,
-           IRepository<PlayGround> playGroundRepository, IMapper mapper, ICommonService commonService, IRepository<PlayGroundType> playGroundTypeRepository)
+           IRepository<PlayGround> playGroundRepository, IMapper mapper, ICommonService commonService, IPlayGroundBookingService bookingService,
+           IRepository<PlayGroundType> playGroundTypeRepository)
         {
             this._playGroundRepository = playGroundRepository;
             this._mapper = mapper;
@@ -33,11 +35,13 @@ namespace Next.Platform.Application.Services
             this._playGroundImagesRepository = playGroundImagesRepository;
             this._context = context;
             this._playGroundTypeRepository = playGroundTypeRepository;
+            this._bookingService = bookingService;
         }
         public Guid CreatePlayGround(PlayGroundDto playGroundDto)
         {
                PlayGround result =  _mapper.Map<PlayGround>(playGroundDto);
                result.Id =Guid.NewGuid();
+               result.Location = playGroundDto.Location;
                result.Rating = 0;
                result.PlayGroundStatusId = PlayGroundStatusEnum.Pending;
                result.PlayGroundCategoryId = playGroundDto.PlayGroundCategoryId;
@@ -101,6 +105,7 @@ namespace Next.Platform.Application.Services
             foreach (var res in result)
             {
                 res.Images = _playGroundImagesRepository.FindBy(p => p.PlayGroundId == res.PlayGroundId).Select(p => p.Path).ToList();
+                res.Location = _commonService.GetNeighborhood(res.NeighborhoodId);
                 approvalViewModels.Add(res);
             }
 
@@ -119,7 +124,12 @@ namespace Next.Platform.Application.Services
         public PlayGroundViewModel GetPlayGround(Guid playGroundId)
         {
             var result = _playGroundRepository.FindBy(p => p.Id == playGroundId && p.PlayGroundStatusId ==PlayGroundStatusEnum.Approved ).FirstOrDefault();
+           
             var playGround = _mapper.Map<PlayGroundViewModel>(result);
+            //foreach (var res in result)
+            //{
+
+            //}
             return playGround;
         }
 
@@ -128,6 +138,13 @@ namespace Next.Platform.Application.Services
             var result = _playGroundTypeRepository.Get().ToList();
             var types = _mapper.Map<List<PlayGroundsTypesViewModel>>(result);
             return types;
+        }
+
+        public List<PlayGroundViewModel> GetAllPlayPlayGroundStatus()
+        {
+            var result = _playGroundRepository.Get().ToList();
+            var playGrounds = _mapper.Map<List<PlayGroundViewModel>>(result);
+            return playGrounds;
         }
 
 

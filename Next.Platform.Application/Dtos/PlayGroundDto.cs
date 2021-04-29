@@ -21,6 +21,7 @@ namespace Next.Platform.Application.Dtos
         public bool HasToilet { get; set; }
         public Guid PlayGroundCategoryId { get; set; }
         public PlayGroundTypeEnum PlayGroundTypeId { get; set; }
+        public string Location { get; set; }
         public IFormFile[] ImageFile { get; set; }
 
     }

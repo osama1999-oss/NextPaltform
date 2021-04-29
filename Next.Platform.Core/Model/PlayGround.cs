@@ -18,6 +18,7 @@ namespace Next.Platform.Core.Model
         public bool HasShower { get; set; }
         public bool HasToilet { get; set; }
         public int Rating { get; set; }
+        public string Location { get; set; }
         public PlayGroundTypeEnum PlayGroundTypeId { get; set; }
 
         public Guid PlayGroundCategoryId { get; set; }

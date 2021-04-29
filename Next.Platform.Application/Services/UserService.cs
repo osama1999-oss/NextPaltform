@@ -9,7 +9,10 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Next.Platform.Application.Dtos;
 using Next.Platform.Application.IServices;
+using Next.Platform.Application.ViewModel;
 using Next.Platform.Core.Model;
+using Next.Platform.Core.StatusEnum;
+using Next.Platform.Infrastructure.AppContext;
 using Next.Platform.Infrastructure.IBaseRepository;
 
 namespace Next.Platform.Application.Services
@@ -21,28 +24,34 @@ namespace Next.Platform.Application.Services
        private readonly IMapper _mapper;
        private readonly IVerificationService _verificationService;
        private readonly ICommonService _commonService;
+       private readonly NextPlatformDbContext _context;
+
         public UserService(ICommonService commonService, IVerificationService verificationService,
-            IRepository<User> useRepository, IMapper mapper, IAuthenticateService authenticateService)
+            IRepository<User> useRepository, IMapper mapper, IAuthenticateService authenticateService, NextPlatformDbContext context)
         {
             this._userRepository = useRepository;
             this._mapper = mapper;
             this._authenticateService = authenticateService;
             this._verificationService = verificationService;
             this._commonService = commonService;
+            this._context = context;
         }
+
+       
 
         public string Login(UserAuthenticationDto userDto)
         {
-             var result= _userRepository.FindBy(u => u.PhoneNumber == userDto.PhoneNumber && u.Password == userDto.Password && u.IsVerified == true)
+             User result= _userRepository.FindBy(u => u.PhoneNumber == userDto.PhoneNumber && u.Password == userDto.Password && u.IsVerified == true)
                     .FirstOrDefault();
-             string token = null;   
-             if(result != null)
-             {
-                 var userDtoResult = _mapper.Map<UserAuthenticationDto>(result);
-                  token = _authenticateService.GenerateJSONWebToken(result.Name);
-             }
+             //string token = null;   
+             //if(result != null)
+             //{
+             //    var userDtoResult = _mapper.Map<UserAuthenticationDto>(result);
+             //     token = _authenticateService.GenerateJSONWebToken(result.Name);
+             //}
+             if (result == null) return "unauthorized";
 
-            return token;
+            return result.Id.ToString();
         }
         public string Register(MemberModelDto user)
         {
@@ -105,10 +114,19 @@ namespace Next.Platform.Application.Services
             return status;
         }
 
-        public List<User> Get()
+        public List<UserInAdminViewModel> Get()
         {
-            var result =_userRepository.Get().ToList();
-            return result;
+            var result = from u in _context.Users
+                         join l in _context.Neighborhoods on u.NeighborhoodId equals l.Id
+                         select new UserInAdminViewModel()
+                         {
+                             Email = u.Email,
+                             ImagePath = u.ImagePath,
+                             Location = l.Name,
+                             Name = u.Name,
+                             PhoneNumber = u.PhoneNumber
+                         };
+            return result.ToList();
         }
 
     }

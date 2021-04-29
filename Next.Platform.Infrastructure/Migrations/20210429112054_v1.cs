@@ -185,6 +185,7 @@ namespace Next.Platform.Infrastructure.Migrations
                     HasShower = table.Column<bool>(type: "bit", nullable: false),
                     HasToilet = table.Column<bool>(type: "bit", nullable: false),
                     Rating = table.Column<int>(type: "int", nullable: false),
+                    Location = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PlayGroundTypeId = table.Column<int>(type: "int", nullable: false),
                     PlayGroundCategoryId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     PlayGroundStatusId = table.Column<int>(type: "int", nullable: false),
@@ -242,16 +243,16 @@ namespace Next.Platform.Infrastructure.Migrations
                 name: "PlayGroundBookings",
                 columns: table => new
                 {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    From = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    To = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    PlayGroundBookingStatusId = table.Column<int>(type: "int", nullable: false),
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    PlayGroundId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Form = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    To = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    BookingIn = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    PlayGroundBookingStatusId = table.Column<int>(type: "int", nullable: false)
+                    PlayGroundId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PlayGroundBookings", x => new { x.UserId, x.PlayGroundId });
+                    table.PrimaryKey("PK_PlayGroundBookings", x => x.Id);
                     table.ForeignKey(
                         name: "FK_PlayGroundBookings_PlayGroundBookingStatus_PlayGroundBookingStatusId",
                         column: x => x.PlayGroundBookingStatusId,
@@ -375,9 +376,9 @@ namespace Next.Platform.Infrastructure.Migrations
                 columns: new[] { "Id", "Type" },
                 values: new object[,]
                 {
-                    { 0, "Ten" },
-                    { 1, "Fourteen" },
-                    { 2, "TwentyOne" }
+                    { 1, "Ten" },
+                    { 2, "Fourteen" },
+                    { 3, "TwentyOne" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -414,6 +415,11 @@ namespace Next.Platform.Infrastructure.Migrations
                 name: "IX_PlayGroundBookings_PlayGroundId",
                 table: "PlayGroundBookings",
                 column: "PlayGroundId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PlayGroundBookings_UserId",
+                table: "PlayGroundBookings",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_PlayGroundCategories_NeighborhoodId",

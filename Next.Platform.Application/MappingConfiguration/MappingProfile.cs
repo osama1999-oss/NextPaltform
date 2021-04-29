@@ -39,6 +39,7 @@ namespace Next.Platform.Application.MappingConfiguration
                 .ForMember(dest => dest.Status, source => source.MapFrom(src => src.PlayGroundStatusId));
             CreateMap<PlayGroundType, PlayGroundsTypesViewModel>();
             CreateMap<Neighborhood, NeighborhoodViewModel>();
+            CreateMap<ReserveDto, PlayGroundBooking>();
         }
     }
 }

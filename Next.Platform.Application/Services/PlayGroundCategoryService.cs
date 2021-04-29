@@ -64,7 +64,7 @@ namespace Next.Platform.Application.Services
             }
             var result = GetPlayGroundCategories()
                 .Where(p => p.NeighborhoodId == categorySearchCriteria.NeighborhoodId &&
-                            p.Price >= categorySearchCriteria.MinPrice || p.Price <= categorySearchCriteria.MaxPrice);
+                            p.Price >= categorySearchCriteria.MinPrice && p.Price <= categorySearchCriteria.MaxPrice);
             return result.ToList();
         }
 
@@ -79,6 +79,14 @@ namespace Next.Platform.Application.Services
             //    }
             //}
             return null;
+        }
+
+        public string GetLocation(Guid playGroundCategoryId)
+        {
+            var result = _playGroundCategoryRepository.FindBy(p => p.Id == playGroundCategoryId)
+                .Select(p => p.NeighborhoodId).FirstOrDefault();
+            var location = _commonService.GetNeighborhood(result);
+            return location;
         }
    }
 }

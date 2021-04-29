@@ -66,7 +66,6 @@ namespace Next.Platform.Infrastructure.AppContext
                 .OnDelete(DeleteBehavior.NoAction);
 
 
-            modelBuilder.Entity<PlayGroundBooking>().HasKey(pgb => new { pgb.UserId, pgb.PlayGroundId });
             modelBuilder.Entity<PreferredPlayGround>().HasKey(ppg => new { ppg.UserId, ppg.PlayGroundId });
 
             modelBuilder
@@ -175,6 +174,8 @@ namespace Next.Platform.Infrastructure.AppContext
                             Status = e.ToString()
                         })
                 );
+            // ================================================
+           
         }
 
         public DbSet<Admin> Admins { get; set; }
