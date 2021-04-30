@@ -21,6 +21,10 @@ namespace Next.Platform.Infrastructure.AppContext
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 
+            modelBuilder.Entity<PlayGroundBooking>().
+                Property(p => p.DateOnly)
+                .HasColumnType("date");
+
             modelBuilder.Entity<User>()
                 .HasIndex(u => u.PhoneNumber)
                 .IsUnique(true);

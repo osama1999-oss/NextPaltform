@@ -37,6 +37,7 @@ namespace Next.Platform.Application.Services
             this._playGroundTypeRepository = playGroundTypeRepository;
             this._bookingService = bookingService;
         }
+
         public Guid CreatePlayGround(PlayGroundDto playGroundDto)
         {
                PlayGround result =  _mapper.Map<PlayGround>(playGroundDto);
@@ -126,10 +127,8 @@ namespace Next.Platform.Application.Services
             var result = _playGroundRepository.FindBy(p => p.Id == playGroundId && p.PlayGroundStatusId ==PlayGroundStatusEnum.Approved ).FirstOrDefault();
            
             var playGround = _mapper.Map<PlayGroundViewModel>(result);
-            //foreach (var res in result)
-            //{
-
-            //}
+            DateTime date1 = new DateTime(2021, 05, 23);
+            playGround.ReservedHours = _bookingService.GetReservedHours(playGroundId,date1);
             return playGround;
         }
 

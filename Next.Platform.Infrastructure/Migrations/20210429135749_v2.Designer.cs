@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Next.Platform.Infrastructure.AppContext;
 
 namespace Next.Platform.Infrastructure.Migrations
 {
     [DbContext(typeof(NextPlatformDbContext))]
-    partial class NextPlatformDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210429135749_v2")]
+    partial class v2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -225,8 +227,8 @@ namespace Next.Platform.Infrastructure.Migrations
                     b.Property<DateTime>("DateOnly")
                         .HasColumnType("date");
 
-                    b.Property<int>("From")
-                        .HasColumnType("int");
+                    b.Property<string>("From")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("PlayGroundBookingStatusId")
                         .HasColumnType("int");
@@ -234,8 +236,8 @@ namespace Next.Platform.Infrastructure.Migrations
                     b.Property<Guid>("PlayGroundId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("To")
-                        .HasColumnType("int");
+                    b.Property<string>("To")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");

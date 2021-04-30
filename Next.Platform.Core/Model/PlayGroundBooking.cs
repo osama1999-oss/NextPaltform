@@ -8,8 +8,9 @@ namespace Next.Platform.Core.Model
    public class PlayGroundBooking
     {
         public Guid Id { get; set; }
-        public DateTime From { get; set; }
-        public DateTime To { get; set; }
+        public int From { get; set; }
+        public int To { get; set; }
+        public DateTime DateOnly { get; set; }
         public PlayGroundBookingStatusEnum PlayGroundBookingStatusId { get; set; }
         public Guid UserId { get; set; }
         public User User { get; set; }

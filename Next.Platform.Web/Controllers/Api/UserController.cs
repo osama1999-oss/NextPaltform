@@ -14,8 +14,10 @@ namespace Next.Platform.Web.Controllers.Api
     public class UserController : ControllerBase
     {
         private readonly IPlayGroundBookingService _bookingService;
-        public UserController(IPlayGroundBookingService bookingService)
+        private readonly IUserService _userService;
+        public UserController(IPlayGroundBookingService bookingService, IUserService userService)
         {
+            this._userService = userService;
             this._bookingService = bookingService;
         }
 
@@ -24,6 +26,20 @@ namespace Next.Platform.Web.Controllers.Api
         public ActionResult Reserve([FromForm] ReserveDto reserveDto)
         {
             var result = _bookingService.Reserve(reserveDto);
+            return Ok(result);
+        }
+        [HttpPost]
+        [Route("GetCurrentReservations")]
+        public ActionResult GetCurrentReservations([FromForm] Guid Id)
+        {
+            var result = _userService.GetCurrentReservations(Id);
+            return Ok(result);
+        }
+        [HttpPost]
+        [Route("GetReservationsHistory")]
+        public ActionResult GetReservationsHistory([FromForm] Guid Id)
+        {
+            var result = _userService.GetReservationsHistory(Id);
             return Ok(result);
         }
     }

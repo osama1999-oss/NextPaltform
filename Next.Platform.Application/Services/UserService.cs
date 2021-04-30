@@ -25,9 +25,10 @@ namespace Next.Platform.Application.Services
        private readonly IVerificationService _verificationService;
        private readonly ICommonService _commonService;
        private readonly NextPlatformDbContext _context;
-
+       private readonly IPlayGroundBookingService _bookingService;
         public UserService(ICommonService commonService, IVerificationService verificationService,
-            IRepository<User> useRepository, IMapper mapper, IAuthenticateService authenticateService, NextPlatformDbContext context)
+            IRepository<User> useRepository, IMapper mapper, IAuthenticateService authenticateService
+            , NextPlatformDbContext context, IPlayGroundBookingService bookingService)
         {
             this._userRepository = useRepository;
             this._mapper = mapper;
@@ -35,9 +36,20 @@ namespace Next.Platform.Application.Services
             this._verificationService = verificationService;
             this._commonService = commonService;
             this._context = context;
+            this._bookingService = bookingService;
         }
 
-       
+        public List<PlayGroundReservationsViewModel> GetCurrentReservations(Guid UserId)
+        {
+            var result = _bookingService.GetCurrentReservations().Where(u => u.UserId == UserId).ToList();
+            return result;
+        }
+
+        public List<PlayGroundReservationsViewModel> GetReservationsHistory(Guid UserId)
+        {
+            var result = _bookingService.GetReservationsHistory().Where(u => u.UserId == UserId).ToList();
+            return result;
+        }
 
         public string Login(UserAuthenticationDto userDto)
         {

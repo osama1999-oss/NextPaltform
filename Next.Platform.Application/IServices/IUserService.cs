@@ -11,7 +11,9 @@ namespace Next.Platform.Application.IServices
 {
    public interface IUserService
    {
-      
+
+       List<PlayGroundReservationsViewModel> GetCurrentReservations(Guid UserId);
+       List<PlayGroundReservationsViewModel> GetReservationsHistory(Guid UserId);
        string Login(UserAuthenticationDto user);
        string Register(MemberModelDto user);
        public bool NumberIsUnique(string phoneNumber);

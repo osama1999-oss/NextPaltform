@@ -16,10 +16,13 @@ namespace Next.Platform.Web.Controllers.Api
     {
         private readonly IPlayGroundService _playGroundService;
         private readonly IPlayGroundCategoryService _playGroundCategoryService;
-        public PlayGroundController(IPlayGroundCategoryService playGroundCategoryService, IPlayGroundService playGroundService)
+        private readonly IPlayGroundBookingService _bookingService;
+        public PlayGroundController(IPlayGroundCategoryService playGroundCategoryService, IPlayGroundBookingService bookingService,
+            IPlayGroundService playGroundService)
         {
             this._playGroundService = playGroundService;
             this._playGroundCategoryService = playGroundCategoryService;
+            this._bookingService = bookingService;
         }
 
         [HttpPost]
@@ -37,6 +40,35 @@ namespace Next.Platform.Web.Controllers.Api
         {
 
             var result = _playGroundCategoryService.CreatePlayGroundCategory(playGroundCategoryDto);
+
+            return Ok(new { result });
+        }
+        [HttpPost]
+        [Route("GetReservedHours")]
+        public ActionResult GetReservedHours([FromForm] ReservedHoursDto hoursDto)
+        {
+
+            var result = _bookingService.GetReservedHours(hoursDto.Id, hoursDto.Day);
+
+            return Ok(new { result });
+        }
+
+        [HttpGet]
+        [Route("GetCurrentReservations")]
+        public ActionResult GetCurrentReservations()
+        {
+
+            var result = _bookingService.GetCurrentReservations();
+
+            return Ok(new { result });
+        }
+
+        [HttpGet]
+        [Route("GetReservationsHistory")]
+        public ActionResult GetReservationsHistory()
+        {
+
+            var result = _bookingService.GetReservationsHistory();
 
             return Ok(new { result });
         }

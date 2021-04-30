@@ -22,6 +22,7 @@ namespace Next.Platform.Application.ViewModel
         public int Rating { get; set; }
         public string Type { get; set; }
         public string Status { get; set; }
+        public List<int> ReservedHours { get; set; }
 
     }
 }
