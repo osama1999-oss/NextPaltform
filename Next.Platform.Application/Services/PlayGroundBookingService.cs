@@ -35,6 +35,20 @@ namespace Next.Platform.Application.Services
 
         }
 
+        public void CancelReservation(Guid reservationId)
+        {
+            var result = _playGroundBookingRepository.FindBy(p => p.Id == reservationId).FirstOrDefault();
+            result.PlayGroundBookingStatusId = PlayGroundBookingStatusEnum.Canceled;
+            _playGroundBookingRepository.Edit(result);
+        }
+
+        public List<PlayGroundReservationsViewModel> GetReservationRequest(Guid playGroundId)
+        {
+            var result = GetCurrentReservations().Where(p => p.PlayGroundId == playGroundId &&
+                                                             p.Status == PlayGroundBookingStatusEnum.Pending.ToString()).ToList();
+            return result;
+        }
+
         public List<PlayGroundReservationsViewModel> GetCurrentReservations()
         {
             var yesterday = DateTime.Today.AddDays(-1).Date;
@@ -60,17 +74,16 @@ namespace Next.Platform.Application.Services
 
             return results.ToList();
         }
-
         public List<PlayGroundReservationsViewModel> GetReservationsHistory()
         {
-            var yesterday = DateTime.Now.Date;
+            var toDay = DateTime.Now.Date;
             var currentTime = DateTime.Now.ToString("HH");
             var passedTime = Int16.Parse(currentTime);
 
             var results = from b in _context.PlayGroundBookings
                 join pl in _context.PlayGrounds on b.PlayGroundId equals pl.Id
                 join u in _context.Users on b.UserId equals u.Id
-                where b.DateOnly < yesterday   && b.PlayGroundBookingStatusId != PlayGroundBookingStatusEnum.Canceled
+                where b.DateOnly <= toDay && b.From <= passedTime  && b.PlayGroundBookingStatusId != PlayGroundBookingStatusEnum.Canceled
                 select new PlayGroundReservationsViewModel()
                 {
                     Id = b.Id,
@@ -86,7 +99,6 @@ namespace Next.Platform.Application.Services
 
             return results.ToList();
         }
-
         public List<int> GetReservedHours(Guid playGroundId, DateTime day)
         {
 
@@ -96,13 +108,11 @@ namespace Next.Platform.Application.Services
                                     .Select(p => p.From).ToList();
             return result;
         }
-
         public List<PlayGroundBooking> GetReservedDate(Guid playGroundId)
         {
             var result = _playGroundBookingRepository.FindBy(p => p.PlayGroundId == playGroundId).ToList();
             return result;
         }
-
         public string Reserve(ReserveDto reserveDto)
         {
 

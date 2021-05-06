@@ -22,13 +22,20 @@ namespace Next.Platform.Application.Services
        private readonly IOwnerService _ownerService;
 
         public PlayGroundCategoryService(ICommonService  commonService, IPlayGroundService playGroundService,
-            IRepository<PlayGroundCategory> playGroundCategoryRepository, IMapper mapper, IOwnerService ownerService)
+            IRepository<PlayGroundCategory> playGroundCategoryRepository, 
+            IMapper mapper, IOwnerService ownerService)
         {
             this._playGroundCategoryRepository = playGroundCategoryRepository;
             this._mapper = mapper;
             this._commonService = commonService;
             this._playGroundService = playGroundService;
             this._ownerService = ownerService;
+        }
+
+        public PlayGroundCategory GetCategoryById(Guid playGroundId)
+        {
+            var result = _playGroundCategoryRepository.FindBy(p => p.Id == playGroundId).FirstOrDefault();
+            return result;
         }
 
         public string CreatePlayGroundCategory(PlayGroundCategoryDto playGroundCategoryDto)

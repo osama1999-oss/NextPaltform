@@ -100,7 +100,7 @@ namespace Next.Platform.Web.Controllers.Api
         [Route("GetAllPlayGrounds")]
         public ActionResult GetAllPlayGrounds()
         {
-            var result = _playGroundService.GetAllPlayPlayGroundStatus();
+            var result = _playGroundService.GetAllPlayPlayGround();
 
             return Ok(new { result });
         }

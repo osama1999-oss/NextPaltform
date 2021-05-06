@@ -11,6 +11,7 @@ namespace Next.Platform.Application.IServices
 {
    public interface IOwnerService
    {
+       List<PlayGroundReservationsViewModel> GetReservationRequest(Guid ownerId);
        string Login(OwnerAuthenticationDto ownerDto);
        string Register(MemberModelDto owner);
        public bool EmailIsUnique(string email);

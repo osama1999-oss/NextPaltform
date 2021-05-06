@@ -43,6 +43,7 @@ namespace Next.Platform.Application.MappingConfiguration
             CreateMap<PlayGroundType, PlayGroundsTypesViewModel>();
             CreateMap<Neighborhood, NeighborhoodViewModel>();
             CreateMap<ReserveDto, PlayGroundBooking>();
+            CreateMap<PreferredDto, PreferredPlayGround>();
         }
     }
 }

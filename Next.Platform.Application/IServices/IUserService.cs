@@ -11,9 +11,10 @@ namespace Next.Platform.Application.IServices
 {
    public interface IUserService
    {
-
-       List<PlayGroundReservationsViewModel> GetCurrentReservations(Guid UserId);
-       List<PlayGroundReservationsViewModel> GetReservationsHistory(Guid UserId);
+       void AddPlayGroundToPreferred(PreferredDto preferredDto);
+       List<PlayGroundViewModel> GetPreferredPlayGrounds(Guid userId);
+       List<PlayGroundReservationsViewModel> GetCurrentReservations(Guid userId);
+       List<PlayGroundReservationsViewModel> GetReservationsHistory(Guid userId);
        string Login(UserAuthenticationDto user);
        string Register(MemberModelDto user);
        public bool NumberIsUnique(string phoneNumber);
@@ -21,6 +22,7 @@ namespace Next.Platform.Application.IServices
        string AddPhoneNumber(PhoneModelDto user);
        string CheckVerificationCode(VerificationCodeDto verificationCode);
        List<UserInAdminViewModel> Get();
+       UserInAdminViewModel GetById(Guid userId);
 
    }
 }

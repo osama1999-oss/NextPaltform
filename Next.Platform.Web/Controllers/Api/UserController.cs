@@ -28,13 +28,48 @@ namespace Next.Platform.Web.Controllers.Api
             var result = _bookingService.Reserve(reserveDto);
             return Ok(result);
         }
+
+
         [HttpPost]
-        [Route("GetCurrentReservations")]
-        public ActionResult GetCurrentReservations([FromForm] Guid Id)
+        [Route("CancelReservation")]
+        public ActionResult CancelReservation([FromForm] Guid reservationId)
         {
-            var result = _userService.GetCurrentReservations(Id);
+             _bookingService.CancelReservation(reservationId);
+            return Ok("Done");
+        }
+
+        [HttpPost]
+        [Route("AddPlayGroundToPreferred")]
+        public ActionResult AddPlayGroundToPreferred([FromForm] PreferredDto preferredDto)
+        {
+              _userService.AddPlayGroundToPreferred(preferredDto);
+            return Ok("Done");
+        }
+
+        [HttpPost]
+        [Route("GetPreferredPlayGround")]
+        public ActionResult GetPreferredPlayGround([FromForm] Guid userId)
+        {
+          var result=   _userService.GetPreferredPlayGrounds(userId);
             return Ok(result);
         }
+
+        [HttpPost]
+        [Route("GetCurrentReservations")]
+        public ActionResult GetCurrentReservations([FromForm] Guid id)
+        {
+            var result = _userService.GetCurrentReservations(id);
+            return Ok(result);
+        }
+
+        [HttpPost]
+        [Route("GetUser")]
+        public ActionResult GetUser([FromForm] Guid userId)
+        {
+            var result = _userService.GetById(userId);
+            return Ok(result);
+        }
+
         [HttpPost]
         [Route("GetReservationsHistory")]
         public ActionResult GetReservationsHistory([FromForm] Guid Id)

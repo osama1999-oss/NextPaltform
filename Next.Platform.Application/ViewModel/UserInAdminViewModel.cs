@@ -6,6 +6,7 @@ namespace Next.Platform.Application.ViewModel
 {
    public class UserInAdminViewModel
     {
+        public Guid Id { get; set; }
         public string Name { get; set; }
         public string Location { get; set; }
         public string ImagePath { get; set; }

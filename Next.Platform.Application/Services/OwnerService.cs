@@ -20,13 +20,24 @@ namespace Next.Platform.Application.Services
        private readonly IMapper _mapper;
        private readonly IVerificationService _verificationService;
        private readonly ICommonService _commonService;
+       private readonly IPlayGroundBookingService _bookingService;
 
-        public OwnerService(ICommonService commonService, IRepository<Owner> ownerRepository, IMapper mapper, IVerificationService verificationService)
+
+        public OwnerService(ICommonService commonService, IRepository<Owner> ownerRepository,
+            IMapper mapper, IVerificationService verificationService, IPlayGroundBookingService bookingService)
         {
             this._ownerRepository = ownerRepository;
             this._mapper = mapper;
             this._verificationService = verificationService;
             this._commonService = commonService;
+            this._bookingService = bookingService;
+        }
+
+        public List<PlayGroundReservationsViewModel> GetReservationRequest(Guid ownerId)
+        {
+            var result = GetById(ownerId);
+            return null;
+
         }
 
         public string Login(OwnerAuthenticationDto ownerDto)

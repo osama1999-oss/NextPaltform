@@ -25,10 +25,12 @@ namespace Next.Platform.Application.Services
        private readonly IVerificationService _verificationService;
        private readonly ICommonService _commonService;
        private readonly NextPlatformDbContext _context;
+       private readonly IRepository<PreferredPlayGround> _preferredRepository;
        private readonly IPlayGroundBookingService _bookingService;
-        public UserService(ICommonService commonService, IVerificationService verificationService,
+       private readonly IPlayGroundService _playGroundService;
+        public UserService(ICommonService commonService, IVerificationService verificationService, IPlayGroundService playGroundService,
             IRepository<User> useRepository, IMapper mapper, IAuthenticateService authenticateService
-            , NextPlatformDbContext context, IPlayGroundBookingService bookingService)
+            , NextPlatformDbContext context, IPlayGroundBookingService bookingService, IRepository<PreferredPlayGround> preferredRepository)
         {
             this._userRepository = useRepository;
             this._mapper = mapper;
@@ -37,17 +39,38 @@ namespace Next.Platform.Application.Services
             this._commonService = commonService;
             this._context = context;
             this._bookingService = bookingService;
+            this._preferredRepository = preferredRepository;
+            this._playGroundService = playGroundService;
         }
 
-        public List<PlayGroundReservationsViewModel> GetCurrentReservations(Guid UserId)
+        public void AddPlayGroundToPreferred(PreferredDto preferredDto)
         {
-            var result = _bookingService.GetCurrentReservations().Where(u => u.UserId == UserId).ToList();
+            var result = _mapper.Map<PreferredPlayGround>(preferredDto);
+            _preferredRepository.Add(result);
+        }
+
+        public List<PlayGroundViewModel> GetPreferredPlayGrounds(Guid userId)
+        {
+         
+            var ids = _preferredRepository.FindBy(p => p.UserId == userId).Select(p => p.PlayGroundId).ToList();
+            List<PlayGroundViewModel> playGroundViewModels = new List<PlayGroundViewModel>();
+            foreach (var id in ids)
+            { 
+                var result =   _playGroundService.GetAllPlayPlayGround().Where(p => p.Id == id).FirstOrDefault();
+                playGroundViewModels.Add(result);
+            }
+            return playGroundViewModels;
+        }
+
+        public List<PlayGroundReservationsViewModel> GetCurrentReservations(Guid userId)
+        {
+            var result = _bookingService.GetCurrentReservations().Where(u => u.UserId == userId).ToList();
             return result;
         }
 
-        public List<PlayGroundReservationsViewModel> GetReservationsHistory(Guid UserId)
+        public List<PlayGroundReservationsViewModel> GetReservationsHistory(Guid userId)
         {
-            var result = _bookingService.GetReservationsHistory().Where(u => u.UserId == UserId).ToList();
+            var result = _bookingService.GetReservationsHistory().Where(u => u.UserId == userId).ToList();
             return result;
         }
 
@@ -132,6 +155,7 @@ namespace Next.Platform.Application.Services
                          join l in _context.Neighborhoods on u.NeighborhoodId equals l.Id
                          select new UserInAdminViewModel()
                          {
+                             Id = u.Id,
                              Email = u.Email,
                              ImagePath = u.ImagePath,
                              Location = l.Name,
@@ -141,5 +165,10 @@ namespace Next.Platform.Application.Services
             return result.ToList();
         }
 
-    }
+        public UserInAdminViewModel GetById(Guid userId)
+        {
+            var result = Get().Where(u => u.Id == userId).FirstOrDefault();
+            return result;
+        }
+   }
 }

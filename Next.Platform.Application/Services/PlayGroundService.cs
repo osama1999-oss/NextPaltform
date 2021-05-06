@@ -139,7 +139,7 @@ namespace Next.Platform.Application.Services
             return types;
         }
 
-        public List<PlayGroundViewModel> GetAllPlayPlayGroundStatus()
+        public List<PlayGroundViewModel> GetAllPlayPlayGround()
         {
             var result = _playGroundRepository.Get().ToList();
             var playGrounds = _mapper.Map<List<PlayGroundViewModel>>(result);

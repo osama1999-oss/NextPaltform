@@ -31,6 +31,7 @@ namespace Next.Platform.Application.Configuration
             services.AddTransient<IRepository<PlayGroundType>, Repository<PlayGroundType>>();
             services.AddTransient<IRepository<Neighborhood>, Repository<Neighborhood>>();
             services.AddTransient<IRepository<PlayGroundBooking>, Repository<PlayGroundBooking>>();
+            services.AddTransient<IRepository<PreferredPlayGround>, Repository<PreferredPlayGround>>();
 
             //Services
             services.AddTransient<IUserService, UserService>();

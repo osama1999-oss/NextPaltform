@@ -9,7 +9,9 @@ namespace Next.Platform.Application.IServices
 {
   public  interface IPlayGroundBookingService
   {
-      List<PlayGroundReservationsViewModel> GetCurrentReservations();
+      void CancelReservation(Guid reservationId);
+      List<PlayGroundReservationsViewModel> GetReservationRequest(Guid playGroundId);
+     List<PlayGroundReservationsViewModel> GetCurrentReservations();
       List<PlayGroundReservationsViewModel> GetReservationsHistory();
       List<int> GetReservedHours(Guid playGroundId, DateTime day);
       List<PlayGroundBooking> GetReservedDate(Guid playGroundId);
