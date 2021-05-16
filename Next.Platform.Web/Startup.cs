@@ -63,6 +63,15 @@ namespace Next.Platform.Web
                     };
                 });
 
+            // Allow Cors
+            services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
+            {
+                builder.SetIsOriginAllowed(o => true)
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .AllowCredentials()
+                    .Build();
+            }));
             // FluentValidation
             services.AddMvc(op =>
             {
@@ -79,15 +88,7 @@ namespace Next.Platform.Web
             //AddSwagger
             services.AddSwaggerGen();
 
-            // Allow Cors
-            services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
-            {
-                builder.AllowAnyOrigin()
-                    .AllowAnyMethod()
-                    .AllowAnyHeader()
-                    .AllowCredentials()
-                    .Build();
-            }));
+         
 
            
             //AddAutoMapper
@@ -107,6 +108,7 @@ namespace Next.Platform.Web
             {
                 app.UseDeveloperExceptionPage();
             }
+            app.UseCors("MyPolicy");
             app.UseStaticFiles();
 
             app.UseSwagger();

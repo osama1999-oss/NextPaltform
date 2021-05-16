@@ -52,7 +52,7 @@ namespace Next.Platform.Web.Controllers.Api
 
         [HttpPost]
         [Route("AdminAuthenticate")]
-        public ActionResult Login([FromForm] AdminAuthenticationDto adminAuthenticationDto)
+        public ActionResult Login( AdminAuthenticationDto adminAuthenticationDto)
         {
             var admin = _adminService.Login(adminAuthenticationDto);
 
