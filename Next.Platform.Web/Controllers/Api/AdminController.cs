@@ -22,31 +22,35 @@ namespace Next.Platform.Web.Controllers.Api
 
         [HttpPost]
         [Route("PlaygroundApproval")]
-        public ActionResult PlaygroundApproval([FromForm] PlayGroundRequestDto playGroundRequestDto)
+        public ActionResult PlaygroundApproval( PlayGroundRequestDto playGroundRequestDto)
         {
-           string result =   _adminService.PlaygroundApproval(playGroundRequestDto);
-            return Ok(result);
+
+           var result =   _adminService.PlaygroundApproval(playGroundRequestDto);
+            return Ok(new {result});
         }
         [HttpGet]
         [Route("GetOwners")]
         public ActionResult GetOwnerInAdminViewModel()
         {
-            List<OwnerInAdminViewModel> results = _adminService.GetOwners();
+            var results = _adminService.GetOwners();
             return Ok(results);
         }
-        [HttpPost]
-        [Route("BlockOwner")]
-        public ActionResult BlockOwner(Guid id)
+
+        [HttpGet]
+        [Route("BlockOwner/{ownerId}")]
+        public ActionResult BlockOwner(string ownerId)
         {
-            string results = _adminService.BlockOwner(id);
-            return Ok(results);
+            var Id = new Guid(ownerId);
+            string results = _adminService.BlockOwner(Id);
+            return Ok(new {results});
         }
-        [HttpPost]
-        [Route("UnBlockOwner")]
-        public ActionResult UnBlockOwner(Guid id)
+        [HttpGet]
+        [Route("UnBlockOwner/{ownerId}")]
+        public ActionResult UnBlockOwner(string ownerId)
         {
+            var id = new Guid(ownerId);
             string results = _adminService.UnBlockOwner(id);
-            return Ok(results);
+            return Ok(new { results });
         }
         [HttpGet]
         [Route("GetBlockedOwners")]

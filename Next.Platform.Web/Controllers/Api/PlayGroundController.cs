@@ -30,7 +30,7 @@ namespace Next.Platform.Web.Controllers.Api
         public ActionResult CreatePlayGround([FromForm] PlayGroundDto playGround)
         {
             playGround.Location = _playGroundCategoryService.GetLocation(playGround.PlayGroundCategoryId);
-            Guid result = _playGroundService.CreatePlayGround(playGround);
+            var result = _playGroundService.CreatePlayGround(playGround);
 
             return Ok(new { result });
         }
@@ -60,7 +60,7 @@ namespace Next.Platform.Web.Controllers.Api
 
             var result = _bookingService.GetCurrentReservations();
 
-            return Ok(new { result });
+            return Ok( result );
         }
 
         [HttpGet]
@@ -78,7 +78,7 @@ namespace Next.Platform.Web.Controllers.Api
         {
             var result = _playGroundService.GetPlayGroundApprovalViewModel();
 
-            return Ok(new { result });
+            return Ok( result );
         }
         [HttpGet]
         [Route("GetPlayGroundTypes")]
@@ -102,7 +102,7 @@ namespace Next.Platform.Web.Controllers.Api
         {
             var result = _playGroundService.GetAllPlayPlayGround();
 
-            return Ok(new { result });
+            return Ok( result );
         }
         [HttpPost]
         [Route("Filter")]

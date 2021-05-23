@@ -77,6 +77,10 @@ namespace Next.Platform.Application.Services
             var results= _ownerService.Get().Where(o => o.MemberStatusId == MemberStatusEnum.Blocked).ToList();
             List<OwnerInAdminViewModel> ownerInAdminViewModels = _mapper.Map<List<OwnerInAdminViewModel>>(results);
 
+            foreach (var owner in ownerInAdminViewModels)
+            {
+                owner.Location = _commonService.GetNeighborhood(owner.NeighborhoodId);
+            }
             return ownerInAdminViewModels;
         }
 

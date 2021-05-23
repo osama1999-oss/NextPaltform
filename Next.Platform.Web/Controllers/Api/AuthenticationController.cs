@@ -49,7 +49,7 @@ namespace Next.Platform.Web.Controllers.Api
             
             return Ok(new {owner});
         }
-
+                
         [HttpPost]
         [Route("AdminAuthenticate")]
         public ActionResult Login( AdminAuthenticationDto adminAuthenticationDto)
