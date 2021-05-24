@@ -28,8 +28,15 @@ namespace Next.Platform.Web.Controllers.Api
         [Route("DailyStatisticsOfReservations")]
         public ActionResult DailyStatisticsOfReservations()
         {
-
             var result = _bookingService.DailyStatisticsOfReservations();
+            return Ok(result);
+        }
+        [HttpGet]
+        [Route("PlayGroundStatusStatistics")]
+        public ActionResult PlayGroundStatusStatistics()
+        {
+
+            var result = _playGroundService.PlayGroundStatusStatistics();
             return Ok(result);
         }
 

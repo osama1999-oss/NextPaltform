@@ -144,6 +144,22 @@ namespace Next.Platform.Application.Services
             return types;
         }
 
+        public List<StatisticReservationsViewModel> PlayGroundStatusStatistics()
+        {
+            var playGrounds = _playGroundRepository.Get().ToList();
+            var group = playGrounds.GroupBy(x => x.PlayGroundStatusId).ToList();
+            List<StatisticReservationsViewModel> dataList = new List<StatisticReservationsViewModel>();
+            foreach (var gr in group)
+            {
+                StatisticReservationsViewModel data = new StatisticReservationsViewModel();
+                data.Name = gr.Key.ToString();
+                data.Value = gr.Count();
+                dataList.Add(data);
+            }
+
+            return dataList;
+        }
+
         public List<PlayGroundViewModel> GetAllPlayPlayGround()
         {
             var result = _playGroundRepository.Get().Where(c=> c.PlayGroundStatusId == PlayGroundStatusEnum.Approved).ToList();

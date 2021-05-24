@@ -45,6 +45,28 @@ namespace Next.Platform.Web.Controllers.Api
             return Ok(new {results});
         }
         [HttpGet]
+        [Route("UserSearch/{userName}")]
+        public ActionResult UserSearch(string userName)
+        {
+            var results = _adminService.UsersSearch(userName);
+            return Ok( results );
+        }
+        [HttpGet]
+        [Route("OwnerSearch/{ownerName}")]
+        public ActionResult OwnerSearch(string ownerName)
+        {
+            var results = _adminService.OwnersSearch(ownerName);
+            return Ok(results);
+        }
+        [HttpGet]
+        [Route("BlockedOwnerSearch/{ownerName}")]
+        public ActionResult BlockedOwnerSearch(string ownerName)
+        {
+            var results = _adminService.BlockedOwnersSearch(ownerName);
+            return Ok(results);
+        }
+
+        [HttpGet]
         [Route("UnBlockOwner/{ownerId}")]
         public ActionResult UnBlockOwner(string ownerId)
         {
