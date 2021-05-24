@@ -115,6 +115,11 @@ namespace Next.Platform.Application.Services
             return approvalViewModels;
         }
 
+        public int GetPlayGroundApprovalViewModelCount()
+        {
+            return GetPlayGroundApprovalViewModel().Count;
+        }
+
         public List<PlayGroundListViewModel> GetPlayGroundlist(Guid playGroundCategoryId)
         {
             var result = _playGroundRepository.FindBy(p => p.PlayGroundCategoryId == playGroundCategoryId && p.PlayGroundStatusId == PlayGroundStatusEnum.Approved).ToList();
@@ -141,9 +146,14 @@ namespace Next.Platform.Application.Services
 
         public List<PlayGroundViewModel> GetAllPlayPlayGround()
         {
-            var result = _playGroundRepository.Get().ToList();
+            var result = _playGroundRepository.Get().Where(c=> c.PlayGroundStatusId == PlayGroundStatusEnum.Approved).ToList();
             var playGrounds = _mapper.Map<List<PlayGroundViewModel>>(result);
             return playGrounds;
+        }
+
+        public int GetAllPlayPlayGroundCount()
+        {
+            return GetAllPlayPlayGround().Count;
         }
 
 

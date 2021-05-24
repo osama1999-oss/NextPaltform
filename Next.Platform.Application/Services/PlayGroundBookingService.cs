@@ -99,6 +99,9 @@ namespace Next.Platform.Application.Services
 
             return results.ToList();
         }
+
+      
+
         public List<int> GetReservedHours(Guid playGroundId, DateTime day)
         {
 
@@ -132,6 +135,53 @@ namespace Next.Platform.Application.Services
            
             return "This Hour Cannot be reserved ";
         }
+      
+        public List<StatisticsData> StatisticsOfReservations()
+        {
+            List<StatisticsData> datalList = new List<StatisticsData>();
+           var result = _playGroundBookingRepository.Get()
+               .Where(x => x.PlayGroundBookingStatusId == PlayGroundBookingStatusEnum.Approved);
+            var groups = result.GroupBy(x => x.PlayGroundId).ToList();
+            foreach (var group in groups)
+            {
+              StatisticsData data = new StatisticsData();
+              data.Id  = group.Key;
+               data.Value = group.Count();
+               datalList.Add(data);
+            }
 
-    }
+          var results=   datalList.OrderByDescending(x => x.Value).ToList();
+          return results;
+        }
+        
+        public List<StatisticReservationsViewModel> DailyStatisticsOfReservations()
+        {
+            var results = _playGroundBookingRepository.Get()
+                .Where(x => x.PlayGroundBookingStatusId == PlayGroundBookingStatusEnum.Approved);
+            List<StatisticReservationsViewModel> days = new List<StatisticReservationsViewModel>();
+            foreach (var result in results)
+            {
+                StatisticReservationsViewModel data = new StatisticReservationsViewModel();
+              var date = Convert.ToDateTime(result.DateOnly.ToString());
+              DateTime dateValue = new DateTime(date.Year, date.Month, date.Day);
+            data.Name=  dateValue.ToString("dddd");
+            data.Value = result.From;
+                days.Add(data);
+            }
+
+            var statistics = days.GroupBy(x => x.Name).ToList();
+            List<StatisticReservationsViewModel> dataList = new List<StatisticReservationsViewModel>();
+
+            foreach (var st in statistics)
+            {
+                StatisticReservationsViewModel data = new StatisticReservationsViewModel();
+
+                data.Name = st.Key;
+                data.Value = st.Count();
+                dataList.Add(data);
+            }
+
+            return dataList;
+        }
+  }
 }

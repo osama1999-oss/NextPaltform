@@ -16,5 +16,7 @@ namespace Next.Platform.Application.IServices
       List<int> GetReservedHours(Guid playGroundId, DateTime day);
       List<PlayGroundBooking> GetReservedDate(Guid playGroundId);
       string Reserve(ReserveDto reserveDto);
-    }
+      List<StatisticsData> StatisticsOfReservations();
+      List<StatisticReservationsViewModel> DailyStatisticsOfReservations();
+  }
 }

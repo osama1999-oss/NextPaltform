@@ -64,12 +64,22 @@ namespace Next.Platform.Application.Services
 
         }
 
+        public int GetOwnersCount()
+        {
+            return GetOwners().Count;
+        }
+
         public List<UserInAdminViewModel> GetUsers()
         {
           var result=  _userService.Get();
          
           return result;
 
+        }
+
+        public int GetUsersCount()
+        {
+            return GetUsers().Count;
         }
 
         public List<OwnerInAdminViewModel> GetBlockedOwners()
