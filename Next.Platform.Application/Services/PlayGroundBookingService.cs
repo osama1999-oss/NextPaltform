@@ -52,17 +52,18 @@ namespace Next.Platform.Application.Services
         public List<PlayGroundReservationsViewModel> GetCurrentReservations()
         {
             var yesterday = DateTime.Today.AddDays(-1).Date;
+            var toDay = DateTime.Today.AddDays(0).Date;
             var currentTime = DateTime.Now.ToString("HH");
             var passedTime = Int16.Parse(currentTime);
-        
+            
             var results = from b in _context.PlayGroundBookings
                                  join pl in _context.PlayGrounds on b.PlayGroundId equals pl.Id
                                  join u in _context.Users on b.UserId equals u.Id
-                                 where b.DateOnly > yesterday && b.From > passedTime && b.PlayGroundBookingStatusId != PlayGroundBookingStatusEnum.Canceled
+                                 where b.DateOnly > toDay || (b.DateOnly == toDay && b.From > passedTime ) && b.PlayGroundBookingStatusId != PlayGroundBookingStatusEnum.Canceled
                                   select new PlayGroundReservationsViewModel()
                                   {
                                       Id = b.Id,
-                                      PlayGroundId = b.PlayGroundId,
+                                      PlayGroundId = b.PlayGroundId,    
                                       UserId = b.UserId,
                                       PlayGroundName = pl.Name,
                                       UserName = u.Name,

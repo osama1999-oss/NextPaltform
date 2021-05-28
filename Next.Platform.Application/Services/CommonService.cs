@@ -17,14 +17,17 @@ namespace Next.Platform.Application.Services
   public  class CommonService : ICommonService
     {
         private readonly IWebHostEnvironment _hostEnvironment;
+        private readonly IHostingEnvironment _hostingEnvironment;
         private readonly IRepository<Neighborhood> _neighborhoodRepository;
         private readonly IMapper _mapper;
 
-        public CommonService(IWebHostEnvironment hostEnvironment, IRepository<Neighborhood> neighborhoodRepository, IMapper mapper)
+
+        public CommonService(IWebHostEnvironment hostEnvironment, IHostingEnvironment hostingEnvironment, IRepository<Neighborhood> neighborhoodRepository, IMapper mapper)
         {
             this._hostEnvironment = hostEnvironment;
             this._neighborhoodRepository = neighborhoodRepository;
             this._mapper = mapper;
+            this._hostingEnvironment = hostingEnvironment;
 
         }
 
@@ -47,6 +50,7 @@ namespace Next.Platform.Application.Services
             string fileName = Path.GetFileNameWithoutExtension(imageFile.FileName);
             string extension = Path.GetExtension(imageFile.FileName);
             string imageName = fileName + DateTime.Now.ToString("yymmssfff") + extension;
+            string value =   "Images/" + folderName + "/" + imageName;
             string path = Path.Combine(wwwRootPath + "\\Images\\" + folderName + "\\", imageName);
             try
             {
@@ -60,7 +64,7 @@ namespace Next.Platform.Application.Services
                 throw;
             }
 
-            return imageName;
+            return value;
         }
     }
 }

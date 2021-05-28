@@ -102,7 +102,7 @@ namespace Next.Platform.Web.Controllers.Api
         {
             var result = _playGroundService.GetAllPlayPlayGround();
 
-            return Ok( result );
+                return Ok( result );
         }
         [HttpPost]
         [Route("Filter")]

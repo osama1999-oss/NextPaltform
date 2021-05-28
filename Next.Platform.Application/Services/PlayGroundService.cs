@@ -66,7 +66,7 @@ namespace Next.Platform.Application.Services
             if (imageFile == null)
             {
                 playGroundImage.Id = Guid.NewGuid();
-                playGroundImage.Path = "DefaultPlayGroundImage.jpg";
+                playGroundImage.Path = "Images/" + "DefaultPlayGroundImage.jpg";
                 _playGroundImagesRepository.Add(playGroundImage);
             }
             else
@@ -78,9 +78,7 @@ namespace Next.Platform.Application.Services
                     playGroundImage.Path = imageName.Result;
                     _playGroundImagesRepository.Add(playGroundImage);
                 }
-
             }
-     
         }
         public List<PlayGroundApprovalViewModel> GetPlayGroundApprovalViewModel()
         {
@@ -164,6 +162,12 @@ namespace Next.Platform.Application.Services
         {
             var result = _playGroundRepository.Get().Where(c=> c.PlayGroundStatusId == PlayGroundStatusEnum.Approved).ToList();
             var playGrounds = _mapper.Map<List<PlayGroundViewModel>>(result);
+
+            foreach (var pl in playGrounds)
+            {
+                pl.Image= _playGroundImagesRepository.FindBy(p => p.PlayGroundId == pl.Id).Select(p => p.Path).ToList();
+               
+            }
             return playGrounds;
         }
 

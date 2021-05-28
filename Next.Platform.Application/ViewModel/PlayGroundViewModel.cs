@@ -9,6 +9,7 @@ namespace Next.Platform.Application.ViewModel
         public Guid Id { get; set; }
         public string Name { get; set; }
         public string Location { get; set; }
+        public List<string> Image { get; set; }
         public string From { get; set; }
         public string To { get; set; }
         public decimal PriceEvening { get; set; }
@@ -21,7 +22,7 @@ namespace Next.Platform.Application.ViewModel
         public bool HasToilet { get; set; }
         public int Rating { get; set; }
         public string Type { get; set; }
-        public string Status { get; set; }
+        public string Status { get; set; }  
         public List<int> ReservedHours { get; set; }
 
     }

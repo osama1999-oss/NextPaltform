@@ -62,7 +62,7 @@ namespace Next.Platform.Web.Controllers.Api
         {
 
             var result = _playGroundService.GetAllPlayPlayGroundCount();
-            return Ok(new { result });
+            return Ok( result );
         }
         [HttpGet]
         [Route("GetPlayGroundApprovalCount")]
@@ -70,7 +70,7 @@ namespace Next.Platform.Web.Controllers.Api
         {
 
             var result = _playGroundService.GetPlayGroundApprovalViewModelCount();
-            return Ok(new { result });
+            return Ok(result );
         }
         [HttpGet]
         [Route("GetUsersCount")]
@@ -78,7 +78,7 @@ namespace Next.Platform.Web.Controllers.Api
         {
 
             var result = _adminService.GetUsersCount();
-            return Ok(new { result });
+            return Ok( result );
         }
         [HttpGet]
         [Route("GetOwnersCount")]
@@ -86,7 +86,7 @@ namespace Next.Platform.Web.Controllers.Api
         {
 
             var result = _adminService.GetOwnersCount();
-            return Ok(new { result });
+            return Ok( result );
         }
     }
 }
